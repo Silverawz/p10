@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout">
+<head>
+<title>Book List</title>
+<style>
+.checkboxes {
+	text-align: center;
+}
+
+.checkboxes input {
+	margin: 0px 0px 0px 0px;
+}
+
+.checkboxes label {
+	margin: 0px 20px 0px 3px;
+}
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="panel panel-primary">
+			
+			
+	 			<div class="panel-body">
+					<form th:action="@{/bookList}" method="get">
+						<label for="control-label">Recherche personnalisée avec mot clé</label>
+
+						<div class="checkboxes">
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_id_book" th:checked="${checkbox_id_book}" /> 
+							ID
+							</label> 
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_name_book" th:checked="${checkbox_name_book}" /> 
+							Nom du livre
+							</label> 
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_number_copies" th:checked="${checkbox_number_copies}" /> 
+							Nombre d'exemplaire(s)
+							</label> 
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_author_book" th:checked="${checkbox_author_book}" /> 
+							Auteur du livre
+							</label> 
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_editor_book" th:checked="${checkbox_editor_book}" />
+							Editeur du livre
+							</label> 
+						</div>
+
+						<br> <label class="">Mot clé :</label> 
+						<input type="text" name="keyWord" th:value="${keyWord}">
+						<button type="submit" class="btn btn-primary">Chercher</button>
+						<br>
+					</form>
+				</div> 
+			 
+			
+				<div class="panel-heading">Liste des livres</div>
+				<div class="panel-body">
+					<table class="display table table-striped table-hover">
+						<tr>
+							<th>ID du livre</th>
+							<th>Nom du livre</th>
+							<th>Nombre d'exemplaire(s)</th>
+							<th>Auteur</th>
+							<th>Editeur</th>
+						<tr th:each="s:${booklist}">
+							<td th:text=${s.id_book}></td>
+							<td th:text=${s.book_name}></td>
+							<td th:text=${s.copy_list.size()}></td>
+							<td th:text=${s.book_author}></td>
+							<td th:text=${s.book_editor}></td>						
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

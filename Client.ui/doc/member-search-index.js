@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"com.deroussenicolas.batch","c":"MyTask","l":"MyTask(SmtpMailSender, MicroserviceUserProxy, MicroserviceBookProxy)","url":"%3Cinit%3E(com.deroussenicolas.SmtpMailSender,com.deroussenicolas.proxies.MicroserviceUserProxy,com.deroussenicolas.proxies.MicroserviceBookProxy)"},{"p":"com.deroussenicolas.batch","c":"MyTask","l":"run()"}]

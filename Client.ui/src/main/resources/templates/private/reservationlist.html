@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout">
+<head>
+<title>Home</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Liste des reservations d'exemplaires</div>
+				<div class="panel-body table-responsive">
+					<table class="display table table-striped table-hover">
+						<tr>
+							<th>ID de la reservation</th>
+							<th>Date de début</th>
+							<th>Date de fin</th>
+							<th>Est archivée</th>
+							<th>Pour l'exemplaire</th>							
+							<th>Prolongation du prêt (Une fois max.)</th>
+							
+						<tr th:each="s,iterStat:${reservationlist}">
+							<td th:text=${s.id_reservation}></td>
+							<td th:text=${s.date_begin}></td>
+							<td th:text=${s.date_end}></td>						
+							<td th:text=${s.is_archived}></td>
+							<td th:text=${s.book_name}></td>			
+					
+							<td th:if="${statusList[__${iterStat.index}__] == true}">
+							<a th:href="@{/extendReservation(id=${s.id_reservation})}">Prolonger le prêt en cours de 4 semaines</a>
+							</td>
+							<td th:if="${statusList[__${iterStat.index}__] != true}">
+									Cette ouvrage a déja été prolongé.
+							</td>	
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

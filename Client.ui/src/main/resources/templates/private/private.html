@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout">
+<head>
+<title>Private page</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+		<h1>Bienvenue dans votre espace personnel</h1>
+			<div class="panel-body">
+				<table class="table">
+				
+						<tr>
+							<td>
+							<a th:href="@{/showAllReservation}">
+							Afficher la liste de vos prêts en cours (<span th:text=${reservationSizeList}></span>)</a>
+							</td>							
+						</tr>
+
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
