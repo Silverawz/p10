@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.deroussenicolas.beans.BookBean;
+import com.deroussenicolas.beans.CopyBean;
+import com.deroussenicolas.beans.ReservationBean;
 import com.deroussenicolas.proxies.MicroserviceBookProxy;
 
 @Controller
@@ -30,10 +33,12 @@ public class BookController {
 				@RequestParam(name="checkbox_name_book", defaultValue= "off") String checkbox_name_book,
 				@RequestParam(name="checkbox_number_copies", defaultValue= "off") String checkbox_number_copies,
 				@RequestParam(name="checkbox_author_book", defaultValue= "off") String checkbox_author_book,
-				@RequestParam(name="checkbox_editor_book", defaultValue= "off") String checkbox_editor_book) { 		  
+				@RequestParam(name="checkbox_editor_book", defaultValue= "off") String checkbox_editor_book,
+				@SessionAttribute("userEmail") String userEmail) { 		  
 	  ModelAndView modelView = new ModelAndView(); 
 	  List<BookBean> bookBeanList = microServiceBookProxy.listOfAllBooks(); 
-	  List<BookBean> finalBookBeanListWithParameters = new ArrayList<>();		  
+	  List<BookBean> finalBookBeanListWithParameters = new ArrayList<>();	
+	  List<String> bookListOwnedByUser = new ArrayList<>();
 	  if(!keyWord.equals("")) {
 			for (BookBean bookBean : bookBeanList) {				
 					if(Integer.toString(bookBean.getId_book()).contains(keyWord) && !checkbox_id_book.equals("off")) {
@@ -70,11 +75,17 @@ public class BookController {
 						}		
 					}
 			}
-			modelView.addObject("booklist", finalBookBeanListWithParameters);	  
+			modelView.addObject("booklist", finalBookBeanListWithParameters);
+			bookListOwnedByUser = bookListOwnedByUser(finalBookBeanListWithParameters, userEmail);
+
 	  }	  
+	  
 	  else {
 		  modelView.addObject("booklist", bookBeanList); 
+		  bookListOwnedByUser = bookListOwnedByUser(finalBookBeanListWithParameters, userEmail);
 	  }
+	  
+	  modelView.addObject("bookListOwnedByUser", bookListOwnedByUser);
 	  modelView.addObject("keyWord", keyWord);
 	  modelView.addObject("checkbox_id_book", checkbox_id_book);
 	  modelView.addObject("checkbox_name_book", checkbox_name_book);
@@ -85,5 +96,22 @@ public class BookController {
 	  return modelView; 	  
 	  }
 	
+	  
+	  public List<String> bookListOwnedByUser(List<BookBean> bookList, String userEmail) {
+		List<String> copyListOwnedByUser = new ArrayList<>();
+		for (BookBean book : bookList) {
+		A : for (CopyBean copy : book.getCopy_list()) {
+				for (ReservationBean reservation : copy.getReservation_list()) {
+					if(!reservation.isIs_archived()) {
+						if(reservation.getUser().getEmail()==userEmail) {
+							copyListOwnedByUser.add(book.getBook_name());
+							break A;
+						}
+					}
+				}
+			}
+		}
+		return copyListOwnedByUser;	  
+	  }
 
 }
