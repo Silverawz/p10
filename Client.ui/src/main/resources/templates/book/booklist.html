@@ -70,12 +70,19 @@
 							<th>Nombre d'exemplaire(s)</th>
 							<th>Auteur</th>
 							<th>Editeur</th>
+							<th>Reserver un exemplaire</th>
+							<th>Date de retour prévue</th>
+							<th>File d'attente</th>
 						<tr th:each="s:${booklist}">
 							<td th:text=${s.id_book}></td>
 							<td th:text=${s.book_name}></td>
 							<td th:text=${s.copy_list.size()}></td>
 							<td th:text=${s.book_author}></td>
-							<td th:text=${s.book_editor}></td>						
+							<td th:text=${s.book_editor}></td>
+							
+							<td th:text=${s.id_book}></td>	
+							<td th:text=${s.copy_list.size()}></td>
+							<td th:text=${s.book_editor}></td>							
 						</tr>
 					</table>
 				</div>

@@ -85,7 +85,7 @@ public class Book implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+	@JsonManagedReference
 	public List<WaitingListReservation> getWaiting_list_reservation() {
 		return waiting_list_reservation;
 	}

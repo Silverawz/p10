@@ -37,7 +37,7 @@ public class User implements Serializable {
 	private boolean active;
 	@OneToMany(mappedBy="user",cascade = CascadeType.ALL)
 	private List <Reservation> reservation_list;
-	@OneToMany(mappedBy="book",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="user",cascade = CascadeType.ALL)
 	private List <WaitingListReservation> waiting_list_reservation;
 	
 	
@@ -107,7 +107,7 @@ public class User implements Serializable {
 	}
 
 
-	
+	@JsonManagedReference
 	public List<WaitingListReservation> getWaiting_list_reservation() {
 		return waiting_list_reservation;
 	}

@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="WaitingListReservation")
 public class WaitingListReservation implements Serializable {
@@ -42,7 +44,8 @@ public class WaitingListReservation implements Serializable {
 	public void setId_waiting_list_reservation(int id_waiting_list_reservation) {
 		this.id_waiting_list_reservation = id_waiting_list_reservation;
 	}
-
+	
+	@JsonBackReference
 	public User getUser() {
 		return user;
 	}
@@ -50,7 +53,8 @@ public class WaitingListReservation implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	
+	@JsonBackReference
 	public Book getBook() {
 		return book;
 	}
