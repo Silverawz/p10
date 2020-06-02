@@ -22,7 +22,7 @@ public class BookController {
 	@Autowired
 	private MicroserviceBookProxy microServiceBookProxy;
 
-		 
+	
 	  @GetMapping("/bookList") 
 	  public ModelAndView bookList(ModelAndView modelAndView,
 				@RequestParam(name="keyWord", defaultValue= "") String keyWord,

@@ -37,6 +37,9 @@ public class User implements Serializable {
 	private boolean active;
 	@OneToMany(mappedBy="user",cascade = CascadeType.ALL)
 	private List <Reservation> reservation_list;
+	@OneToMany(mappedBy="book",cascade = CascadeType.ALL)
+	private List <WaitingListReservation> waiting_list_reservation;
+	
 	
 	public User() {
 		super();
@@ -101,6 +104,16 @@ public class User implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+
+	
+	public List<WaitingListReservation> getWaiting_list_reservation() {
+		return waiting_list_reservation;
+	}
+
+	public void setWaiting_list_reservation(List<WaitingListReservation> waiting_list_reservation) {
+		this.waiting_list_reservation = waiting_list_reservation;
 	}
 
 	@Override

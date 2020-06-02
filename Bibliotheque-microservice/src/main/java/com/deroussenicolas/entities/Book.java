@@ -33,6 +33,8 @@ public class Book implements Serializable {
 	private String book_editor;
 	@OneToMany(mappedBy="book",cascade = CascadeType.ALL)
 	private List <Copy> copy_list;
+	@OneToMany(mappedBy="book",cascade = CascadeType.ALL)
+	private List <WaitingListReservation> waiting_list_reservation;
 	
 	public Book() {
 		super();
@@ -83,7 +85,15 @@ public class Book implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public List<WaitingListReservation> getWaiting_list_reservation() {
+		return waiting_list_reservation;
+	}
 
+	public void setWaiting_list_reservation(List<WaitingListReservation> waiting_list_reservation) {
+		this.waiting_list_reservation = waiting_list_reservation;
+	}
+	
 	@Override
 	public String toString() {
 		return "Book [id_book=" + id_book + ", book_name=" + book_name + ", copy_list=" + copy_list + "]";
