@@ -75,7 +75,7 @@
 							<th>Date de retour prévue</th>
 							<th>File d'attente</th>
 							
-						<tr th:each="s:${booklist}">
+						<tr th:each="s:${booklist.get(0)}">
 							<td th:text=${s.id_book}></td>
 							<td th:text=${s.book_name}></td>
 							<td th:text=${s.copy_list.size()}></td>
@@ -83,15 +83,16 @@
 							<td th:text=${s.book_editor}></td>
 							
 							<!-- si s.copy_list.size() == 0 et que user ne possede pas le book alors on affiche un bouton reservation avec href -->
-							<td th:if="${s.copy_list.size() == 0 && !bookListOwnedByUser.contains(s.book_name)}">
+							<td th:if="${s.copy_list.size() == 0}">
 							<a onclick="return confirm('Etes vous sur ?')" th:href="@{/reservation(id=${s.id_book})}">
 								Reserver</a>
 							</td>	
+							
 							<!-- si s.copy_list.size() == 0 alors on affiche la date de retour prévue -->
-							<td th:if="${s.copy_list.size() == 0}" th:text="03/05/2020">
+							<td th:if="${s.copy_list.size() == 0}" th:text="aaaaa">
 		
 							</td>	
-							<!-- si s.copy_list.size() == 0 on affiche la size pour le book en question -->
+							<!-- si s.copy_list.size() == 0 on affiche la size de la file d'attente pour le book en question -->
 							<td th:if="${s.copy_list.size() == 0}" th:text="15">
 							</td>							
 						</tr>

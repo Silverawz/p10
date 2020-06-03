@@ -23,8 +23,8 @@ public class BookBean implements Serializable {
 	
 	public BookBean() {
 		super();
-	}
-	
+	}	
+
 	public int getId_book() {
 		return id_book;
 	}

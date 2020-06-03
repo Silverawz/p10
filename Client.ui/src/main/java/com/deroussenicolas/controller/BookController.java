@@ -13,18 +13,30 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.deroussenicolas.beans.BookBean;
+import com.deroussenicolas.beans.BookPresentationBean;
 import com.deroussenicolas.beans.CopyBean;
 import com.deroussenicolas.beans.ReservationBean;
 import com.deroussenicolas.proxies.MicroserviceBookProxy;
+import com.deroussenicolas.proxies.MicroserviceCopyProxy;
+import com.deroussenicolas.proxies.MicroserviceReservationProxy;
+import com.deroussenicolas.proxies.MicroserviceWaitingListReservationProxy;
 
 @Controller
 @SessionAttributes("userEmail")
 public class BookController {
 
-
+	
 	@Autowired
 	private MicroserviceBookProxy microServiceBookProxy;
 
+	@Autowired
+	private MicroserviceCopyProxy microServiceCopyProxy;
+	
+	@Autowired
+	private MicroserviceReservationProxy microServiceReservationProxy;
+	
+	@Autowired
+	private MicroserviceWaitingListReservationProxy microserviceWaitingListReservationProxy;
 	
 	  @GetMapping("/bookList") 
 	  public ModelAndView bookList(ModelAndView modelAndView,
@@ -38,7 +50,6 @@ public class BookController {
 	  ModelAndView modelView = new ModelAndView(); 
 	  List<BookBean> bookBeanList = microServiceBookProxy.listOfAllBooks(); 
 	  List<BookBean> finalBookBeanListWithParameters = new ArrayList<>();	
-	  List<String> bookListOwnedByUser = new ArrayList<>();
 	  if(!keyWord.equals("")) {
 			for (BookBean bookBean : bookBeanList) {				
 					if(Integer.toString(bookBean.getId_book()).contains(keyWord) && !checkbox_id_book.equals("off")) {
@@ -76,16 +87,10 @@ public class BookController {
 					}
 			}
 			modelView.addObject("booklist", finalBookBeanListWithParameters);
-			bookListOwnedByUser = bookListOwnedByUser(finalBookBeanListWithParameters, userEmail);
-
-	  }	  
-	  
+	  }	    
 	  else {
 		  modelView.addObject("booklist", bookBeanList); 
-		  bookListOwnedByUser = bookListOwnedByUser(finalBookBeanListWithParameters, userEmail);
 	  }
-	  
-	  modelView.addObject("bookListOwnedByUser", bookListOwnedByUser);
 	  modelView.addObject("keyWord", keyWord);
 	  modelView.addObject("checkbox_id_book", checkbox_id_book);
 	  modelView.addObject("checkbox_name_book", checkbox_name_book);
@@ -97,21 +102,46 @@ public class BookController {
 	  }
 	
 	  
-	  public List<String> bookListOwnedByUser(List<BookBean> bookList, String userEmail) {
-		List<String> copyListOwnedByUser = new ArrayList<>();
-		for (BookBean book : bookList) {
-		A : for (CopyBean copy : book.getCopy_list()) {
-				for (ReservationBean reservation : copy.getReservation_list()) {
-					if(!reservation.isIs_archived()) {
-						if(reservation.getUser().getEmail()==userEmail) {
-							copyListOwnedByUser.add(book.getBook_name());
-							break A;
-						}
-					}
-				}
+	 public List<BookPresentationBean> listOfBooksBeanFormatedForPresentation(List<BookBean> bookBeanList, String userEmail) {
+		 
+		 /*
+		List<CopyBean> listCopy = microServiceCopyProxy.allCopiesWithUserEmail(userEmail);
+		for (CopyBean copyBean : listCopy) {
+			if(copyBean.getStatus())
+		}*/
+		
+		 //recuperer une liste de reservation = au nombre de livre avec leur date de retour la plus proche
+		List<ReservationBean> listAllReservationsNotArchived = microServiceReservationProxy.listOfAllReservationNotArchived();
+		
+		List<BookPresentationBean> listOfBooksBeansFormatedForPresentation = new ArrayList<>();
+		
+		
+		for (BookBean bookBean : bookBeanList) {
+			BookPresentationBean bookPresentationBean = new BookPresentationBean(bookBean.getId_book(), bookBean.getBook_name(), bookBean.getBook_author(), 
+					 bookBean.getBook_editor(), bookBean.getCopy_list());
+			//si copy = 0 alors on peut reservé, 
+			if(bookBean.getCopy_list().size() == 0) {
+				
+				//reste à check si l'user possède un exemplaire pour valider le true		
+				bookPresentationBean.setIs_reserved(true);
 			}
-		}
-		return copyListOwnedByUser;	  
-	  }
+			
+			//comment faire ?
+			bookPresentationBean.setDate_when_book_is_back("15/02/2020");
 
+			
+			listOfBooksBeansFormatedForPresentation.add(bookPresentationBean);
+		}
+		return listOfBooksBeansFormatedForPresentation;		 
+	 }
+
+	 
+	 
+	 
+	  
+	  /*
+	  public List<Integer> bookListWaitingQueue(List<BookBean> bookList) {
+		List <WaitingListReservationBean> list = microserviceWaitingListReservationProxy.waitingList();
+		return null;	  
+	  }*/
 }

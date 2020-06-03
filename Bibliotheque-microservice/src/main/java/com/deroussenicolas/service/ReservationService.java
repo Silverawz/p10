@@ -1,6 +1,7 @@
 package com.deroussenicolas.service;
 
 
+import java.util.Date;
 import java.util.List;
 
 import com.deroussenicolas.entities.Reservation;
@@ -16,4 +17,6 @@ public interface ReservationService {
 	List<Reservation> findAll();
 
 	List<Reservation> reservationListNotArchived(boolean b);
+	
+	List<Date> lastRevervationForEachBooks();
 }

@@ -2,16 +2,22 @@ package com.deroussenicolas.service;
 
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.deroussenicolas.dao.BookRepository;
 import com.deroussenicolas.dao.ReservationRepository;
 import com.deroussenicolas.entities.Reservation;
 
@@ -20,7 +26,10 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Autowired
 	private ReservationRepository reservationRepository;
-
+	
+	@Autowired
+	private BookRepository bookRepository;
+	
 	private Calendar calendar;
 	private YearMonth yearMonthObject;
 	@Override
@@ -243,5 +252,61 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Reservation> reservationListNotArchived(boolean b) {
 		return reservationRepository.reservationListNotArchived(b);
 	}
+
+
+
+	@Override
+	public List<Date> lastRevervationForEachBooks() {
+		List<Date> listOfTheLastReservationForeachBooksByOrder = new ArrayList<>();	
+		//recuperer une liste de reservation = au nombre de livre avec leur date de retour la plus proche
+		List<Reservation> allReservationsNotArchived = reservationRepository.reservationListNotArchived(false);
+		for (int i = 0 ; i < bookRepository.findAll().size() ; i++) {
+			i++;
+			List<Reservation> reservationsForCurrentBookAsI = new ArrayList<>();
+			for (Reservation reservation : allReservationsNotArchived) {
+				if(reservation.getCopy().getBook().getId_book() == i) {
+					reservationsForCurrentBookAsI.add(reservation);
+				}
+			}
+			if(reservationsForCurrentBookAsI.size() != 0) {
+				listOfTheLastReservationForeachBooksByOrder.add(compareDateOfReservations(reservationsForCurrentBookAsI));
+			}
+			else {
+				listOfTheLastReservationForeachBooksByOrder.add(null);
+			}
+			i--;
+		}
+		return listOfTheLastReservationForeachBooksByOrder;
+	}
+
 	
+	
+	public Date compareDateOfReservations(List<Reservation> listToCompareDate) {
+		List<Date> dates = new ArrayList<>();
+		for (Reservation reservation : listToCompareDate) {
+			try {
+				dates.add(new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(reservation.getDate_end()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}			
+		}
+		return getNearestDate(dates, new Date());
+	}
+	
+	
+	public Date getNearestDate(List<Date> dates, Date currentDate) {
+		  long minDiff = -1, currentTime = currentDate.getTime();
+		  Date minDate = null;
+		  for (Date date : dates) {
+		    long diff = Math.abs(currentTime - date.getTime());
+		    if ((minDiff == -1) || (diff < minDiff)) {
+		      minDiff = diff;
+		      minDate = date;
+		    }
+		  }
+		  return minDate;
+	}
+
+	
+
 }
