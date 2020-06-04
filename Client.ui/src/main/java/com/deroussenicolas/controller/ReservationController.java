@@ -1,7 +1,11 @@
 package com.deroussenicolas.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,8 +47,13 @@ public class ReservationController {
 			}	
 			if(copyBean.getStatus() == '1' && confirmationUserIsCorrect == true) {
 				ReservationBean reservationBean = microserviceReservationProxy.extendReservationWithId(reservation_id);
-				modelView.addObject("date", "Date de début : " + reservationBean.getDate_begin() + " || Date de fin : " + reservationBean.getDate_end());
-				modelView.setViewName("private/extendReservation");	
+				if(verificationIfEndingDateIsNotOutdated(reservationBean.getDate_end()) == true) {
+					modelView.addObject("date", "Date de début : " + reservationBean.getDate_begin() + " || Date de fin : " + reservationBean.getDate_end());
+					modelView.setViewName("private/extendReservation");	
+				}
+				else {
+					modelView.setViewName("errors/reservation_error");	
+				}
 			}			
 		} catch (Exception e) {
 			System.err.println("error" + e);
@@ -76,5 +85,19 @@ public class ReservationController {
 		modelView.addObject("statusList", statusList);
 		modelView.setViewName("private/reservationlist");
 		return modelView;	
+	}
+	
+	public boolean verificationIfEndingDateIsNotOutdated(String date) {
+		boolean result = false;		
+		try {
+			Date dateParsedFromString = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date);
+			int resultDateCompare = dateParsedFromString.compareTo(new Date());
+			if(resultDateCompare >= 0) {
+				result = true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}			
+		return result;
 	}
 }
