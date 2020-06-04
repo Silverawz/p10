@@ -2,12 +2,17 @@ package com.deroussenicolas.service;
 
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -219,8 +224,15 @@ public class ReservationServiceImpl implements ReservationService {
 
 
 	@Override
-	public List<Reservation> reservationListOfUser(int id_user) {
-		return reservationRepository.reservationListOfUser(id_user);
+	public List<Reservation> reservationListOfUser(int id_user) {		
+		List<Reservation> reservationListOfUser = reservationRepository.reservationListOfUser(id_user);
+		List<Reservation> reservationListOfUserWithoutOutDatedEndingDate = new ArrayList<>();
+		for (Reservation reservation : reservationListOfUser) {
+			if(verificationIfEndingDateIsNotOutdated(reservation.getDate_end()) == true) {
+				reservationListOfUserWithoutOutDatedEndingDate.add(reservation);
+			}
+		}		
+		return reservationListOfUserWithoutOutDatedEndingDate;
 	}
 
 
@@ -244,4 +256,18 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservationRepository.reservationListNotArchived(b);
 	}
 	
+	
+	public boolean verificationIfEndingDateIsNotOutdated(String date) {
+		boolean result = false;		
+		try {
+			Date dateParsedFromString = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date);
+			int resultDateCompare = dateParsedFromString.compareTo(new Date());
+			if(resultDateCompare >= 0) {
+				result = true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}			
+		return result;
+	}
 }
