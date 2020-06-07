@@ -25,6 +25,8 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	private BookRepository bookRepository;
 	@Autowired
+	private CopyService copyService;
+	@Autowired
 	private WaitingListReservationRepository waitingListReservationRepository;
 	
 	@Override
@@ -103,26 +105,24 @@ public class BookServiceImpl implements BookService {
 	public List<Integer> queueSizeForEachBooks() {
 		List<Integer> queueSizeForEeachBooks = new ArrayList<>();
 		List<Book> listAllBooks = bookRepository.findAll();
-		List<Integer> numberOfCopiesForEachBooks = new ArrayList<>();
 		
 		List<WaitingListReservation> listWaitingListReservation = waitingListReservationRepository.waitingListReservationWithParams(false, false);
-		//recuperer le nombre de copy pour chaque book
 		
-		
+		//recuperer le nombre de copy pour chaque book		
+		//copyService.numberOfCopiesNotAvailableForEachBook(); // *2 to respect the rules
 		
 		
 		
 		//calculer le nombre de personne dans la liste
-		for (Book book : bookRepository.findAll()) {
+		for (Book book : listAllBooks) {
 			int incrementalNumber = 0;
 			for (WaitingListReservation waitingListReservation : listWaitingListReservation) {
-				if(waitingListReservation.getBook().equals(book)) { //rajouter la condition nbre d'exemplaires x 2 maximum
+				if(waitingListReservation.getBook().getId_book() == (book.getId_book())) { 
 					incrementalNumber++;
 				}
 			}
+			queueSizeForEeachBooks.add(incrementalNumber);
 		}
-		
-		
 		return queueSizeForEeachBooks;
 	}
 

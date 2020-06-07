@@ -14,5 +14,5 @@ public interface CopyService {
 
 	void save(Copy copyOfTheReservation);
 
-	List<Integer> numberOfCopies();
+	List<Integer> numberOfCopiesNotAvailableForEachBook();
 }

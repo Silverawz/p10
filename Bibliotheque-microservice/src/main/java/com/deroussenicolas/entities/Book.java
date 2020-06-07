@@ -86,6 +86,7 @@ public class Book implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 	@JsonManagedReference
 	public List<WaitingListReservation> getWaiting_list_reservation() {
 		return waiting_list_reservation;
@@ -94,10 +95,6 @@ public class Book implements Serializable {
 	public void setWaiting_list_reservation(List<WaitingListReservation> waiting_list_reservation) {
 		this.waiting_list_reservation = waiting_list_reservation;
 	}
-	
-	@Override
-	public String toString() {
-		return "Book [id_book=" + id_book + ", book_name=" + book_name + ", copy_list=" + copy_list + "]";
-	}
+
 	
 }

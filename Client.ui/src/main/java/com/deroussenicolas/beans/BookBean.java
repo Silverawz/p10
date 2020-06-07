@@ -1,7 +1,7 @@
 package com.deroussenicolas.beans;
 
 import java.io.Serializable;
-
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -20,6 +20,9 @@ public class BookBean implements Serializable {
 	private String book_author;
 	private String book_editor;
 	private List <CopyBean> copy_list;
+	private boolean book_is_already_reserved_by_user;
+	private Date date_when_book_is_back;
+	private int waiting_queue;
 	
 	public BookBean() {
 		super();
@@ -66,10 +69,34 @@ public class BookBean implements Serializable {
 		this.copy_list = copy_list;
 	}
 
-	@Override
-	public String toString() {
-		return "BookBean [id_book=" + id_book + ", book_name=" + book_name + ", copy_list=" + copy_list + "]";
+	public boolean isBook_is_already_reserved_by_user() {
+		return book_is_already_reserved_by_user;
 	}
+
+	public void setBook_is_already_reserved_by_user(boolean book_is_already_reserved_by_user) {
+		this.book_is_already_reserved_by_user = book_is_already_reserved_by_user;
+	}
+
+	public Date getDate_when_book_is_back() {
+		return date_when_book_is_back;
+	}
+
+	public void setDate_when_book_is_back(Date date_when_book_is_back) {
+		this.date_when_book_is_back = date_when_book_is_back;
+	}
+
+	public int getWaiting_queue() {
+		return waiting_queue;
+	}
+
+	public void setWaiting_queue(int waiting_queue) {
+		this.waiting_queue = waiting_queue;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 
 
 }

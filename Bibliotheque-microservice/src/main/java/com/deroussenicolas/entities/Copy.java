@@ -73,10 +73,5 @@ public class Copy implements Serializable {
 		return serialVersionUID;
 	}
 
-	@Override
-	public String toString() {
-		return "Copy [id_copy=" + id_copy + ", status=" + status + ", book=" + book + ", reservation_list="
-				+ reservation_list + "]";
-	}
 	
 }

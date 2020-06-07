@@ -19,6 +19,7 @@ import com.deroussenicolas.dao.UserRepository;
 import com.deroussenicolas.dao.WaitingListReservationRepository;
 import com.deroussenicolas.entities.WaitingListReservation;
 import com.deroussenicolas.service.BookService;
+import com.deroussenicolas.service.CopyService;
 import com.deroussenicolas.service.ReservationService;
 import com.deroussenicolas.service.UserService;
 
@@ -35,6 +36,8 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 	private BookService BookService;
 	@Autowired
 	private CopyRepository copyRepository;
+	@Autowired
+	private CopyService copyService;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -77,7 +80,8 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		waitingListReservationRepository.save(waitingListReservation1);	
 		}
 		
-		System.out.println(BookService.queueSizeForEachBooks());
+		//System.out.println(copyService.numberOfCopiesNotAvailableForEachBook()); // OK FONCTIONNE BIEN
+		//System.out.println(BookService.queueSizeForEachBooks()); // OK FONCTIONNE BIEN
 		
 		/*
 		Reservation reservation = new Reservation();

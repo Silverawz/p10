@@ -93,7 +93,22 @@ public class BookController {
 			modelView.addObject("booklist", finalBookBeanListWithParameters);
 	  }	    
 	  else {
-		  modelView.addObject("booklist", bookBeanList); 
+
+		 // modelView.addObject("booklist", bookBeanList); 
+		  
+		  int id_user = microserviceUserProxy.loadUserByUsername(userEmail).getId_user();
+		  List<Boolean> booksOwnedByUserInOrderAsBoolean = microserviceUserProxy.booksOwnedByUserInOrderAsBoolean(id_user);
+		  List<Date> lastReservationForEachBooks = microServiceBookProxy.lastRevervationForEachBooks();
+		  List<Integer> queueSizeForEachsBooks = microServiceBookProxy.queueSizeForEachsBooks();
+		  
+		  int index = 0;
+		  for (BookBean bookBean : bookBeanList) {
+			  bookBean.setBook_is_already_reserved_by_user(booksOwnedByUserInOrderAsBoolean.get(index));
+			  bookBean.setDate_when_book_is_back(lastReservationForEachBooks.get(index));
+			  bookBean.setWaiting_queue(queueSizeForEachsBooks.get(index));
+			  index++;
+		}
+		 modelView.addObject("booklist", bookBeanList);
 	  }
 	  
 	  
@@ -119,10 +134,7 @@ public class BookController {
 		
 	  */
 
-	  
-	  
-	  
-	  
+
 	  modelView.addObject("keyWord", keyWord);
 	  modelView.addObject("checkbox_id_book", checkbox_id_book);
 	  modelView.addObject("checkbox_name_book", checkbox_name_book);
