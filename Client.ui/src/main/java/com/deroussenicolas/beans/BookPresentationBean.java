@@ -9,9 +9,9 @@ public class BookPresentationBean {
 	private String book_author;
 	private String book_editor;
 	private List <CopyBean> copy_list;
-	private boolean is_reserved;
+	private boolean book_is_already_reserved_by_user;
 	private String date_when_book_is_back;
-	private int waitingQueue;
+	private int waiting_queue;
 	
 	public BookPresentationBean() {
 		super();
@@ -26,11 +26,11 @@ public class BookPresentationBean {
 	}
 
 	public boolean isIs_reserved() {
-		return is_reserved;
+		return book_is_already_reserved_by_user;
 	}
 
 	public void setIs_reserved(boolean is_reserved) {
-		this.is_reserved = is_reserved;
+		this.book_is_already_reserved_by_user = is_reserved;
 	}
 
 	public String getDate_when_book_is_back() {
@@ -42,11 +42,11 @@ public class BookPresentationBean {
 	}
 
 	public int getWaitingQueue() {
-		return waitingQueue;
+		return waiting_queue;
 	}
 
 	public void setWaitingQueue(int waitingQueue) {
-		this.waitingQueue = waitingQueue;
+		this.waiting_queue = waitingQueue;
 	}
 
 	public int getId_book() {

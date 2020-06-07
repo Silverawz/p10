@@ -75,7 +75,7 @@
 							<th>Date de retour prévue</th>
 							<th>File d'attente</th>
 							
-						<tr th:each="s:${booklist.get(0)}">
+						<tr th:each="s:${booklist}">
 							<td th:text=${s.id_book}></td>
 							<td th:text=${s.book_name}></td>
 							<td th:text=${s.copy_list.size()}></td>

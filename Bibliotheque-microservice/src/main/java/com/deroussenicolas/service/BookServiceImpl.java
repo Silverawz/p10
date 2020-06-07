@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.deroussenicolas.dao.BookRepository;
 import com.deroussenicolas.dao.ReservationRepository;
+import com.deroussenicolas.dao.WaitingListReservationRepository;
 import com.deroussenicolas.entities.Book;
 import com.deroussenicolas.entities.Reservation;
+import com.deroussenicolas.entities.WaitingListReservation;
 
 @Service("BookServiceImpl")
 public class BookServiceImpl implements BookService {
@@ -22,6 +24,8 @@ public class BookServiceImpl implements BookService {
 	private ReservationRepository reservationRepository;
 	@Autowired
 	private BookRepository bookRepository;
+	@Autowired
+	private WaitingListReservationRepository waitingListReservationRepository;
 	
 	@Override
 	public List<Book> getAllBooksForEmail() {
@@ -93,4 +97,34 @@ public class BookServiceImpl implements BookService {
 		return bookRepository.findById(id);
 	}
 
+	
+	
+	@Override
+	public List<Integer> queueSizeForEachBooks() {
+		List<Integer> queueSizeForEeachBooks = new ArrayList<>();
+		List<Book> listAllBooks = bookRepository.findAll();
+		List<Integer> numberOfCopiesForEachBooks = new ArrayList<>();
+		
+		List<WaitingListReservation> listWaitingListReservation = waitingListReservationRepository.waitingListReservationWithParams(false, false);
+		//recuperer le nombre de copy pour chaque book
+		
+		
+		
+		
+		
+		//calculer le nombre de personne dans la liste
+		for (Book book : bookRepository.findAll()) {
+			int incrementalNumber = 0;
+			for (WaitingListReservation waitingListReservation : listWaitingListReservation) {
+				if(waitingListReservation.getBook().equals(book)) { //rajouter la condition nbre d'exemplaires x 2 maximum
+					incrementalNumber++;
+				}
+			}
+		}
+		
+		
+		return queueSizeForEeachBooks;
+	}
+
+	
 }

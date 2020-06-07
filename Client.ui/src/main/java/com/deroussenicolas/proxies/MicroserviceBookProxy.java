@@ -1,5 +1,6 @@
 package com.deroussenicolas.proxies;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,5 +30,10 @@ public interface MicroserviceBookProxy {
 	@GetMapping(value="/BooksToEmail")
 	@ResponseBody List<BookBean> listOfAllBooksToSendEmail();
 	
-	
+    @GetMapping(value = "/Book/LastReservationForEachBooks")
+    @ResponseBody List<Date> lastRevervationForEachBooks();
+    
+    @GetMapping(value = "/Book/QueueSizeForEachsBooks")
+    @ResponseBody List<Integer> queueSizeForEachsBooks();
+
 }

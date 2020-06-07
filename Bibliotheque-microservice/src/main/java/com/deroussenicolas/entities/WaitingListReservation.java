@@ -1,6 +1,7 @@
 package com.deroussenicolas.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,8 @@ public class WaitingListReservation implements Serializable {
 	private boolean is_archived;
 	@NotNull
 	private boolean is_canceled;
+	private Date date_mail_send;
+	
 	
 	public WaitingListReservation() {
 		
@@ -85,6 +88,18 @@ public class WaitingListReservation implements Serializable {
 
 	public void setIs_canceled(boolean is_canceled) {
 		this.is_canceled = is_canceled;
+	}
+
+	public Date getDate_mail_send() {
+		return date_mail_send;
+	}
+
+	public void setDate_mail_send(Date date_mail_send) {
+		this.date_mail_send = date_mail_send;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	

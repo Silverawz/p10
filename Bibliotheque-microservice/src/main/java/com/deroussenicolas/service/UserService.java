@@ -14,4 +14,5 @@ public interface UserService {
 
 	User findById(int id);
 
+	List<Boolean> userOwnTheBookList(int id);
 }

@@ -1,7 +1,7 @@
 package com.deroussenicolas.controller;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,4 +53,15 @@ public class BookController {
     	return booksList;
     }
 
+    @GetMapping(value = "/Book/LastReservationForEachBooks")
+    public List<Date> lastRevervationForEachBooks() {		
+    	return reservationService.lastRevervationForEachBooks();
+    }
+    
+    @GetMapping(value = "/Book/QueueSizeForEachsBooks")
+    public List<Integer> queueSizeForEachsBooks(){
+		return bookService.queueSizeForEachBooks();
+    }
+    
+    
 }

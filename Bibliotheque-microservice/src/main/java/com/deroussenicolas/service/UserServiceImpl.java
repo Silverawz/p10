@@ -5,13 +5,17 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.deroussenicolas.dao.BookRepository;
+import com.deroussenicolas.dao.CopyRepository;
 import com.deroussenicolas.dao.ReservationRepository;
 import com.deroussenicolas.dao.UserRepository;
+import com.deroussenicolas.entities.Book;
 import com.deroussenicolas.entities.Reservation;
 import com.deroussenicolas.entities.User;
 
@@ -21,7 +25,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private ReservationRepository reservationRepository;
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepository userRepository;	
+	@Autowired
+	private BookRepository bookRepository;
+	@Autowired
+	private CopyRepository copyRepository;	
 	
 	@Override
 	public List<User> getListUserToSendEmail() {
@@ -98,5 +106,25 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findById(id);
 	}
 
-
+	@Override
+	public List<Boolean> userOwnTheBookList(int user_id) {
+		List<Reservation> listAllReservationOfUserNotArchived = reservationRepository.reservationListOfUser(user_id, false);
+		List<Boolean> resultListOfUserOwnedOrNotEachBooks = new ArrayList<>();
+		List<Book> listOfAllBooks = bookRepository.findAll();
+		for (int i = 0 ; i < listOfAllBooks.size() ; i++) {
+			resultListOfUserOwnedOrNotEachBooks.add(i, false);
+		}
+		List<Integer> listCopyOfBooksFromReservation = new ArrayList<>();
+		for (Reservation reservation : listAllReservationOfUserNotArchived) {
+			if(!listCopyOfBooksFromReservation.contains(reservation.getCopy().getId_copy())) {
+				listCopyOfBooksFromReservation.add(reservation.getCopy().getId_copy());
+			}
+		}	
+		Collections.sort(listCopyOfBooksFromReservation);		
+		for (int i = 0 ; i < listCopyOfBooksFromReservation.size() ; i++) {
+			resultListOfUserOwnedOrNotEachBooks.set(copyRepository.findById(listCopyOfBooksFromReservation.get(i)).getBook().getId_book() - 1, true);
+		}	
+		return resultListOfUserOwnedOrNotEachBooks;
+	}
+	
 }

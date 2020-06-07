@@ -2,6 +2,7 @@ package com.deroussenicolas.controller;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.deroussenicolas.beans.BookBean;
 import com.deroussenicolas.beans.BookPresentationBean;
-import com.deroussenicolas.beans.CopyBean;
 import com.deroussenicolas.beans.ReservationBean;
+import com.deroussenicolas.beans.WaitingListReservationBean;
 import com.deroussenicolas.proxies.MicroserviceBookProxy;
 import com.deroussenicolas.proxies.MicroserviceCopyProxy;
 import com.deroussenicolas.proxies.MicroserviceReservationProxy;
+import com.deroussenicolas.proxies.MicroserviceUserProxy;
 import com.deroussenicolas.proxies.MicroserviceWaitingListReservationProxy;
 
 @Controller
 @SessionAttributes("userEmail")
 public class BookController {
 
+	@Autowired
+	private MicroserviceUserProxy microserviceUserProxy;
 	
 	@Autowired
 	private MicroserviceBookProxy microServiceBookProxy;
@@ -91,6 +95,34 @@ public class BookController {
 	  else {
 		  modelView.addObject("booklist", bookBeanList); 
 	  }
+	  
+	  
+	  // avoir les trois elements suivants ici :
+	  // 1 reserver un exemplaire en boolean, 
+	  // 2 date de retour prévenue pour l'exemplaire le plus proche de la date actuel pour un livre
+	  // 3 et enfin la file d'attente du livre en question
+	  
+	  
+	  
+	  /*   1
+	  int id_user = microserviceUserProxy.loadUserByUsername(userEmail).getId_user();
+	  List<Boolean> booksOwnedByUserInOrderAsBoolean = microserviceUserProxy.booksOwnedByUserInOrderAsBoolean(id_user);
+	  
+
+
+			2
+	  List<Date> lastReservationForEachBooks = microServiceBookProxy.lastRevervationForEachBooks();
+	  
+	        3
+	        
+	  List<Integer> queueSizeForEachsBooks = microServiceBookProxy.queueSizeForEachsBooks();
+		
+	  */
+
+	  
+	  
+	  
+	  
 	  modelView.addObject("keyWord", keyWord);
 	  modelView.addObject("checkbox_id_book", checkbox_id_book);
 	  modelView.addObject("checkbox_name_book", checkbox_name_book);

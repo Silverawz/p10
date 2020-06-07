@@ -64,4 +64,8 @@ public class UserController {
         return usersListToSendEmail;
     }
 	
+	@GetMapping(value="/booksOwnedByUser/{user_id}")
+	public @ResponseBody List<Boolean> booksOwnedByUserInOrderAsBoolean(@PathVariable int user_id) {
+		return userservice.userOwnTheBookList(user_id);
+	}
 }

@@ -11,4 +11,6 @@ public interface BookService {
 	List<Book> findAll();
 
 	Book findById(int id);
+
+	List<Integer> queueSizeForEachBooks();
 }

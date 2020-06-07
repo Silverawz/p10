@@ -36,4 +36,8 @@ public interface MicroserviceUserProxy {
 
 	@PostMapping(value = "/User/validation")
 	@ResponseBody UserBean test(@RequestBody String email);
+	
+	@GetMapping(value="/booksOwnedByUser/{user_id}")
+	@ResponseBody List<Boolean> booksOwnedByUserInOrderAsBoolean(@PathVariable int user_id);
+
 }

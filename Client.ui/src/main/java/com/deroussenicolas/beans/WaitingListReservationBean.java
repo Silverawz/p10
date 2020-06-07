@@ -1,6 +1,7 @@
 package com.deroussenicolas.beans;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class WaitingListReservationBean implements Serializable	 {
 
@@ -15,6 +16,7 @@ public class WaitingListReservationBean implements Serializable	 {
 	private int position_in_queue;
 	private boolean is_archived;
 	private boolean is_canceled;
+	private Date date_mail_send;
 	
 	public WaitingListReservationBean() {
 		
@@ -65,6 +67,18 @@ public class WaitingListReservationBean implements Serializable	 {
 	
 	public void setIs_canceled(boolean is_canceled) {
 		this.is_canceled = is_canceled;
+	}
+	
+	public Date getDate_mail_send() {
+		return date_mail_send;
+	}
+	
+	public void setDate_mail_send(Date date_mail_send) {
+		this.date_mail_send = date_mail_send;
+	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	
