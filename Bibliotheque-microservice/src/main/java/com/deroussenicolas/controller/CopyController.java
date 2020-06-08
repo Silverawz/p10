@@ -57,7 +57,7 @@ public class CopyController {
     }
 	
     @GetMapping(value = "/CopiesOfUser/{email}")
-    public List<Copy> allCopiesWithUserEmail(@PathVariable String email){
+    public List<Copy> allCopiesWithUserEmail(@PathVariable String email) {
     	List <Reservation> reservationsList = reservationService.reservationListOfUser(userService.findByEmail(email).getId_user());
     	List <Integer> copy_id = new ArrayList<>();
     	for (Reservation reservation : reservationsList) {
@@ -70,4 +70,8 @@ public class CopyController {
     	return copies;  	
     }
 	
+    @GetMapping(value = "/numberOfCopiesNotAvailableForEachBook")
+    public List<Integer> numberOfCopiesNotAvailableForEachBook() {
+    	return copyService.numberOfCopiesNotAvailableForEachBook();
+    }
 }

@@ -22,7 +22,7 @@ public class BookBean implements Serializable {
 	private List <CopyBean> copy_list;
 	private boolean book_is_already_reserved_by_user;
 	private Date date_when_book_is_back;
-	private int waiting_queue;
+	private String waiting_queue;
 	
 	public BookBean() {
 		super();
@@ -85,11 +85,11 @@ public class BookBean implements Serializable {
 		this.date_when_book_is_back = date_when_book_is_back;
 	}
 
-	public int getWaiting_queue() {
+	public String getWaiting_queue() {
 		return waiting_queue;
 	}
 
-	public void setWaiting_queue(int waiting_queue) {
+	public void setWaiting_queue(String waiting_queue) {
 		this.waiting_queue = waiting_queue;
 	}
 

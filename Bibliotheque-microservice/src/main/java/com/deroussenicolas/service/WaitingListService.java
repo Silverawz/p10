@@ -8,4 +8,5 @@ public interface WaitingListService {
 
 	List<WaitingListReservation> findAll();
 
+	List<Boolean> checkIfUserHasMadeAReservationForEchBooks(List<Boolean> checkingList, int user_id);
 }

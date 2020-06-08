@@ -30,6 +30,8 @@ public class UserServiceImpl implements UserService {
 	private BookRepository bookRepository;
 	@Autowired
 	private CopyRepository copyRepository;	
+	@Autowired
+	private WaitingListService waitingListService;	
 	
 	@Override
 	public List<User> getListUserToSendEmail() {
@@ -124,6 +126,10 @@ public class UserServiceImpl implements UserService {
 		for (int i = 0 ; i < listCopyOfBooksFromReservation.size() ; i++) {
 			resultListOfUserOwnedOrNotEachBooks.set(copyRepository.findById(listCopyOfBooksFromReservation.get(i)).getBook().getId_book() - 1, true);
 		}	
+		
+		// fait appel au service waitingList qui doit verifier pour chaque si l'user y est et mettre en true, tous les livres dont l'user a fait la demande	
+		resultListOfUserOwnedOrNotEachBooks = waitingListService.checkIfUserHasMadeAReservationForEchBooks(resultListOfUserOwnedOrNotEachBooks, user_id);
+		
 		return resultListOfUserOwnedOrNotEachBooks;
 	}
 	

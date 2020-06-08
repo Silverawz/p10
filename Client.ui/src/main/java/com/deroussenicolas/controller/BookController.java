@@ -100,12 +100,19 @@ public class BookController {
 		  List<Boolean> booksOwnedByUserInOrderAsBoolean = microserviceUserProxy.booksOwnedByUserInOrderAsBoolean(id_user);
 		  List<Date> lastReservationForEachBooks = microServiceBookProxy.lastRevervationForEachBooks();
 		  List<Integer> queueSizeForEachsBooks = microServiceBookProxy.queueSizeForEachsBooks();
-		  
+		  List<Integer> numberOfCopiesNotAvailableForEachBook = microServiceCopyProxy.numberOfCopiesNotAvailableForEachBook();
 		  int index = 0;
 		  for (BookBean bookBean : bookBeanList) {
-			  bookBean.setBook_is_already_reserved_by_user(booksOwnedByUserInOrderAsBoolean.get(index));
-			  bookBean.setDate_when_book_is_back(lastReservationForEachBooks.get(index));
-			  bookBean.setWaiting_queue(queueSizeForEachsBooks.get(index));
+			  bookBean.setDate_when_book_is_back(lastReservationForEachBooks.get(index));  
+			  bookBean.setWaiting_queue(""+queueSizeForEachsBooks.get(index)+"/"+numberOfCopiesNotAvailableForEachBook.get(index)+"");
+
+			  if(queueSizeForEachsBooks.get(index) == numberOfCopiesNotAvailableForEachBook.get(index)) { // if waiting queue is full then you cannot do a reservation
+				  bookBean.setBook_is_already_reserved_by_user(true);
+			  } else {
+				  bookBean.setBook_is_already_reserved_by_user(booksOwnedByUserInOrderAsBoolean.get(index));
+			  }
+		  
+
 			  index++;
 		}
 		 modelView.addObject("booklist", bookBeanList);

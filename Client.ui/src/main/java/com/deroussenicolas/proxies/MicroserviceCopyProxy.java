@@ -33,5 +33,8 @@ public interface MicroserviceCopyProxy {
 	
 	@GetMapping(value = "/CopiesOfUser/{email}")
 	@ResponseBody List<CopyBean> allCopiesWithUserEmail(@PathVariable String email);
+	
+	@GetMapping(value = "/numberOfCopiesNotAvailableForEachBook")
+	@ResponseBody List<Integer> numberOfCopiesNotAvailableForEachBook();
 
 }
