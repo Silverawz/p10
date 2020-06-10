@@ -261,21 +261,20 @@ public class ReservationServiceImpl implements ReservationService {
 		//recuperer une liste de reservation = au nombre de livre avec leur date de retour la plus proche
 		List<Reservation> allReservationsNotArchived = reservationRepository.reservationListNotArchived(false);
 		for (int i = 0 ; i < bookRepository.findAll().size() ; i++) {
-			i++;
-			List<Reservation> reservationsForCurrentBookAsI = new ArrayList<>();
+			List<Reservation> reservationsForCurrentBookAsIndexAsI = new ArrayList<>();
 			for (Reservation reservation : allReservationsNotArchived) {
-				if(reservation.getCopy().getBook().getId_book() == i) {
-					reservationsForCurrentBookAsI.add(reservation);
+				if(reservation.getCopy().getBook().getId_book() == bookRepository.findAll().get(i).getId_book()) {
+					reservationsForCurrentBookAsIndexAsI.add(reservation);
 				}
-			}
-			if(reservationsForCurrentBookAsI.size() != 0) {
-				listOfTheLastReservationForeachBooksByOrder.add(compareDateOfReservations(reservationsForCurrentBookAsI));
+			}			
+			if(reservationsForCurrentBookAsIndexAsI.size() != 0) {
+				listOfTheLastReservationForeachBooksByOrder.add(compareDateOfReservations(reservationsForCurrentBookAsIndexAsI));
 			}
 			else {
 				listOfTheLastReservationForeachBooksByOrder.add(null);
-			}
-			i--;
+			}						
 		}
+		
 		return listOfTheLastReservationForeachBooksByOrder;
 	}
 

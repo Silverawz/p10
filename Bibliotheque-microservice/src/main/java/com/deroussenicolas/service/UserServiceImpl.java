@@ -112,24 +112,31 @@ public class UserServiceImpl implements UserService {
 	public List<Boolean> userOwnTheBookList(int user_id) {
 		List<Reservation> listAllReservationOfUserNotArchived = reservationRepository.reservationListOfUser(user_id, false);
 		List<Boolean> resultListOfUserOwnedOrNotEachBooks = new ArrayList<>();
-		List<Book> listOfAllBooks = bookRepository.findAll();
+		List<Book> listOfAllBooks = bookRepository.findAll();	
 		for (int i = 0 ; i < listOfAllBooks.size() ; i++) {
 			resultListOfUserOwnedOrNotEachBooks.add(i, false);
-		}
+		}	
 		List<Integer> listCopyOfBooksFromReservation = new ArrayList<>();
 		for (Reservation reservation : listAllReservationOfUserNotArchived) {
 			if(!listCopyOfBooksFromReservation.contains(reservation.getCopy().getId_copy())) {
-				listCopyOfBooksFromReservation.add(reservation.getCopy().getId_copy());
+				listCopyOfBooksFromReservation.add(reservation.getCopy().getBook().getId_book());
 			}
 		}	
-		Collections.sort(listCopyOfBooksFromReservation);		
-		for (int i = 0 ; i < listCopyOfBooksFromReservation.size() ; i++) {
-			resultListOfUserOwnedOrNotEachBooks.set(copyRepository.findById(listCopyOfBooksFromReservation.get(i)).getBook().getId_book() - 1, true);
+		Collections.sort(listCopyOfBooksFromReservation);
+		System.out.println("listCopyOfBooksFromReservation="+listCopyOfBooksFromReservation);
+		
+		for (int i = 0 ; i < listOfAllBooks.size() ; i++) {
+			A : for (Integer integer : listCopyOfBooksFromReservation) {
+				if(listOfAllBooks.get(i).getId_book() == integer) {
+					resultListOfUserOwnedOrNotEachBooks.set(i, true);
+					break A;
+				}
+			}
+			//resultListOfUserOwnedOrNotEachBooks.set(index, true);	
+			//resultListOfUserOwnedOrNotEachBooks.set(copyRepository.findById(listCopyOfBooksFromReservation.get(i)).getBook().getId_book() - 1, true);
 		}	
-		
 		// fait appel au service waitingList qui doit verifier pour chaque si l'user y est et mettre en true, tous les livres dont l'user a fait la demande	
-		resultListOfUserOwnedOrNotEachBooks = waitingListService.checkIfUserHasMadeAReservationForEchBooks(resultListOfUserOwnedOrNotEachBooks, user_id);
-		
+		resultListOfUserOwnedOrNotEachBooks = waitingListService.checkIfUserHasMadeAReservationForEchBooks(resultListOfUserOwnedOrNotEachBooks, user_id);		
 		return resultListOfUserOwnedOrNotEachBooks;
 	}
 	

@@ -51,6 +51,21 @@
 							<input type="checkbox" name="checkbox_editor_book" th:checked="${checkbox_editor_book}" />
 							Editeur du livre
 							</label> 
+							
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_date_back" th:checked="${checkbox_date_back}" />
+							Date de retour prévue
+							</label> 
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_waiting_queue" th:checked="${checkbox_waiting_queue}" />
+							File d'attente
+							</label> 
+							<label class="checkbox-inline"> 
+							<input type="checkbox" name="checkbox_reserving" th:checked="${checkbox_reserving}" />
+							Reserver un exemplaire
+							</label> 						
+							
+							
 						</div>
 
 						<br> <label class="">Mot clé :</label> 
@@ -105,7 +120,7 @@
 							<!-- si s.copy_list.size() == 0 on affiche la size de la file d'attente pour le book en question -->
 							<td th:text=${s.waiting_queue}></td>	
 							
-							<td th:if="${s.copy_list.size() == 0 && !s.book_is_already_reserved_by_user}">
+							<td th:if="${!s.book_is_already_reserved_by_user}">
 							<a onclick="return confirm('Etes vous sur ?')" th:href="@{/reservation(id=${s.id_book})}">
 								Reserver</a>
 							</td>					
