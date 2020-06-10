@@ -9,4 +9,6 @@ public interface WaitingListService {
 	List<WaitingListReservation> findAll();
 
 	List<Boolean> checkIfUserHasMadeAReservationForEchBooks(List<Boolean> checkingList, int user_id);
+	
+	List<WaitingListReservation> waitingListReservationOfBookWithParams(int book_id, boolean is_archived, boolean is_canceled);
 }

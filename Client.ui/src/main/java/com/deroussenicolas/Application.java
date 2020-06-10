@@ -67,9 +67,10 @@ public class Application extends SpringBootServletInitializer implements Command
 		 * Sending a mail to every user who didnt return back their book according to the reservation date
 		 * Every night at 2 AM, the task will run
 		 */
+		/*
 		Timer timer = new Timer(); timer.schedule(new MyTask(smtpMailSender,microserviceUserProxy, microserviceBookProxy), 
       	today.getTime(), TimeUnit.MILLISECONDS.convert(1,TimeUnit.DAYS)); // period: 1 day DAYS
-		
+		*/
 		
 		
 		 

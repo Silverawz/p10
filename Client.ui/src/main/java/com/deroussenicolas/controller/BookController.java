@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.deroussenicolas.beans.BookBean;
-import com.deroussenicolas.beans.BookPresentationBean;
-import com.deroussenicolas.beans.ReservationBean;
-import com.deroussenicolas.beans.WaitingListReservationBean;
+import com.deroussenicolas.beans.CopyBean;
 import com.deroussenicolas.proxies.MicroserviceBookProxy;
 import com.deroussenicolas.proxies.MicroserviceCopyProxy;
 import com.deroussenicolas.proxies.MicroserviceReservationProxy;
@@ -57,25 +55,11 @@ public class BookController {
 				@RequestParam(name="checkbox_reserving", defaultValue= "off") String checkbox_reserving,
 				@SessionAttribute("userEmail") String userEmail) { 		  
 	  ModelAndView modelView = new ModelAndView(); 
+	  
 	  List<BookBean> bookBeanList = microServiceBookProxy.listOfAllBooks(); 
-	  List<BookBean> finalBookBeanListWithParameters = new ArrayList<>();	
-	  int id_user = microserviceUserProxy.loadUserByUsername(userEmail).getId_user();
-	  List<Boolean> booksOwnedByUserInOrderAsBoolean = microserviceUserProxy.booksOwnedByUserInOrderAsBoolean(id_user);
-	  List<Date> lastReservationForEachBooks = microServiceBookProxy.lastRevervationForEachBooks();
-	  List<Integer> queueSizeForEachsBooks = microServiceBookProxy.queueSizeForEachsBooks();
-	  List<Integer> numberOfCopiesNotAvailableForEachBook = microServiceCopyProxy.numberOfCopiesNotAvailableForEachBook();
-	  int index = 0;
-	  for (BookBean bookBean : bookBeanList) {
-		  bookBean.setDate_when_book_is_back(lastReservationForEachBooks.get(index));  
-		  bookBean.setWaiting_queue(""+queueSizeForEachsBooks.get(index)+"/"+numberOfCopiesNotAvailableForEachBook.get(index)+"");
-		  if(queueSizeForEachsBooks.get(index) == numberOfCopiesNotAvailableForEachBook.get(index)) { // if waiting queue is full then you cannot do a reservation
-			  bookBean.setBook_is_already_reserved_by_user(true);
-		  } else {
-			  bookBean.setBook_is_already_reserved_by_user(booksOwnedByUserInOrderAsBoolean.get(index));
-		  }
-		  System.out.println(bookBean.isBook_is_already_reserved_by_user());
-		  index++;
-	  }
+	  List<BookBean> finalBookBeanListWithParameters = insertTheDataInsideTheBookBean(bookBeanList, userEmail);	
+
+	  
 	  
 	  if(!keyWord.equals("")) {
 			for (BookBean bookBean : bookBeanList) {				
@@ -185,46 +169,38 @@ public class BookController {
 	  }
 	
 	  
-	 public List<BookPresentationBean> listOfBooksBeanFormatedForPresentation(List<BookBean> bookBeanList, String userEmail) {
-		 
-		 /*
-		List<CopyBean> listCopy = microServiceCopyProxy.allCopiesWithUserEmail(userEmail);
-		for (CopyBean copyBean : listCopy) {
-			if(copyBean.getStatus())
-		}*/
-		
-		 //recuperer une liste de reservation = au nombre de livre avec leur date de retour la plus proche
-		List<ReservationBean> listAllReservationsNotArchived = microServiceReservationProxy.listOfAllReservationNotArchived();
-		
-		List<BookPresentationBean> listOfBooksBeansFormatedForPresentation = new ArrayList<>();
-		
-		
-		for (BookBean bookBean : bookBeanList) {
-			BookPresentationBean bookPresentationBean = new BookPresentationBean(bookBean.getId_book(), bookBean.getBook_name(), bookBean.getBook_author(), 
-					 bookBean.getBook_editor(), bookBean.getCopy_list());
-			//si copy = 0 alors on peut reservé, 
-			if(bookBean.getCopy_list().size() == 0) {
-				
-				//reste à check si l'user possède un exemplaire pour valider le true		
-				bookPresentationBean.setIs_reserved(true);
-			}
-			
-			//comment faire ?
-			bookPresentationBean.setDate_when_book_is_back("15/02/2020");
-
-			
-			listOfBooksBeansFormatedForPresentation.add(bookPresentationBean);
-		}
-		return listOfBooksBeansFormatedForPresentation;		 
-	 }
-
-	 
-	 
-	 
 	  
-	  /*
-	  public List<Integer> bookListWaitingQueue(List<BookBean> bookList) {
-		List <WaitingListReservationBean> list = microserviceWaitingListReservationProxy.waitingList();
-		return null;	  
-	  }*/
+	  
+	  private List<BookBean> insertTheDataInsideTheBookBean(List<BookBean> bookBeanList, String userEmail) {  
+		  int id_user = microserviceUserProxy.loadUserByUsername(userEmail).getId_user();
+		  List<Boolean> booksOwnedByUserInOrderAsBoolean = microserviceUserProxy.booksOwnedByUserInOrderAsBoolean(id_user);
+		  List<Date> lastReservationForEachBooks = microServiceBookProxy.lastRevervationForEachBooks();
+		  List<Integer> queueSizeForEachsBooks = microServiceBookProxy.queueSizeForEachsBooks();
+		  List<Integer> numberOfCopiesNotAvailableForEachBook = microServiceCopyProxy.numberOfCopiesNotAvailableForEachBook();		  
+		  for (int i = 0; i < bookBeanList.size(); i++) {
+			// date_when_book_is_back
+			bookBeanList.get(i).setDate_when_book_is_back(lastReservationForEachBooks.get(i)); 
+			// waiting_queue
+			bookBeanList.get(i).setWaiting_queue(""+queueSizeForEachsBooks.get(i)+"/"+numberOfCopiesNotAvailableForEachBook.get(i)+""); 
+			// book_is_already_reserved_by_user
+			if(queueSizeForEachsBooks.get(i) == numberOfCopiesNotAvailableForEachBook.get(i)) { // if waiting queue is full then you cannot do a reservation
+				  bookBeanList.get(i).setBook_is_already_reserved_by_user(true); // cannot reserve because waiting queue is full
+			} else {
+				  bookBeanList.get(i).setBook_is_already_reserved_by_user(booksOwnedByUserInOrderAsBoolean.get(i)); // insert the previous data
+			}
+			// numberOfCopiesAvailable	
+		    bookBeanList.get(i).setNumberOfCopiesAvailable(numberOfCopiesAvailableCalculate(bookBeanList.get(i).getCopy_list()));	  
+		  }  
+		  return bookBeanList;	  
+	  }
+	  
+	  private int numberOfCopiesAvailableCalculate(List<CopyBean> copyList) {
+		 int numberOfCopiesAvailable = 0; 
+		 for (CopyBean copyBean : copyList) {
+			if(copyBean.getStatus() == '0') {
+				numberOfCopiesAvailable++;
+			}	
+		 } 	 
+		 return numberOfCopiesAvailable;
+	  }
 }

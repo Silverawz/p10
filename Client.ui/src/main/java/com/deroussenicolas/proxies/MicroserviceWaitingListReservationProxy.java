@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.deroussenicolas.beans.WaitingListReservationBean;
@@ -17,4 +18,7 @@ public interface MicroserviceWaitingListReservationProxy {
 
 	@GetMapping(value="/WaitingList")
 	@ResponseBody List<WaitingListReservationBean> waitingList();
+	
+	@GetMapping(value="/WaitingListReservationCheck/{id_book}/{userEmail}")
+	@ResponseBody boolean WaitingListReservationCheck(@PathVariable int id_book, @PathVariable String userEmail);
 }

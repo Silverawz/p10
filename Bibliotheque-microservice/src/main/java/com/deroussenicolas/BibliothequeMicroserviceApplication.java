@@ -240,7 +240,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		
 		
 		
-		System.out.println(userService.userOwnTheBookList(18));
+		//System.out.println(userService.userOwnTheBookList(18));
 		/*
 		for (Reservation reservation : reservationRepository.findAll()) {
 			reservationRepository.delete(reservation);

@@ -122,9 +122,7 @@ public class UserServiceImpl implements UserService {
 				listCopyOfBooksFromReservation.add(reservation.getCopy().getBook().getId_book());
 			}
 		}	
-		Collections.sort(listCopyOfBooksFromReservation);
-		System.out.println("listCopyOfBooksFromReservation="+listCopyOfBooksFromReservation);
-		
+		Collections.sort(listCopyOfBooksFromReservation);		
 		for (int i = 0 ; i < listOfAllBooks.size() ; i++) {
 			A : for (Integer integer : listCopyOfBooksFromReservation) {
 				if(listOfAllBooks.get(i).getId_book() == integer) {

@@ -23,6 +23,7 @@ public class BookBean implements Serializable {
 	private boolean book_is_already_reserved_by_user;
 	private Date date_when_book_is_back;
 	private String waiting_queue;
+	private int numberOfCopiesAvailable;
 	
 	public BookBean() {
 		super();
@@ -97,6 +98,13 @@ public class BookBean implements Serializable {
 		return serialVersionUID;
 	}
 
+	public int getNumberOfCopiesAvailable() {
+		return numberOfCopiesAvailable;
+	}
+
+	public void setNumberOfCopiesAvailable(int numberOfCopiesAvailable) {
+		this.numberOfCopiesAvailable = numberOfCopiesAvailable;
+	}
 
 
 }
