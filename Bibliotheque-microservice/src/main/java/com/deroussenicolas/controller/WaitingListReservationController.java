@@ -63,7 +63,11 @@ public class WaitingListReservationController {
     	return false;
     }
 	
-	
+	@GetMapping(value="/WaitingListReservationFromUser/{userEmail}")
+    public List<WaitingListReservation> WaitingListReservationFromUser(@PathVariable String userEmail) {
+		return waitingListReservationRepository.waitingListReservationOfUserWithParams(userService.findByEmail(userEmail).getId_user(), false, false);		
+	}
+    
 	private int positionInQueueCalculate(int id_book) {
 		int positionInQueue = 0;
 		List<WaitingListReservation> waitingListReservationOfBookWithParams = waitingListService.waitingListReservationOfBookWithParams(id_book, false, false);

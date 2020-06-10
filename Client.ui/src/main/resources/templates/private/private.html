@@ -16,8 +16,12 @@
 						<tr>
 							<td>
 							<a th:href="@{/showAllReservation}">
-							Afficher la liste de vos prêts en cours (<span th:text=${reservationSizeList}></span>)</a>
-							</td>							
+							Afficher la liste de vos emprunts en cours (<span th:text=${reservationSizeList}></span>)</a>
+							</td>			
+							<td>
+							<a th:href="@{/showAllReservationWaitingList}">
+							Afficher la liste de vos demande de réservation en cours (<span th:text=${reservationWaitingListSizeList}></span>)</a>
+							</td>					
 						</tr>
 
 				</table>

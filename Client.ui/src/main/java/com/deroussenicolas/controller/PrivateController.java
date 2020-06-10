@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.deroussenicolas.beans.ReservationBean;
+import com.deroussenicolas.beans.WaitingListReservationBean;
 import com.deroussenicolas.proxies.MicroserviceReservationProxy;
+import com.deroussenicolas.proxies.MicroserviceWaitingListReservationProxy;
 
 @Controller
 @SessionAttributes("userEmail")
@@ -19,7 +21,8 @@ public class PrivateController {
 
 	@Autowired
 	private MicroserviceReservationProxy microserviceReservationProxy;
-
+	@Autowired
+	private MicroserviceWaitingListReservationProxy microserviceWaitingListReservationProxy;
 	
 	@GetMapping("/private")
 	public ModelAndView privateSpace(@SessionAttribute("userEmail") String userEmail) {
@@ -27,8 +30,9 @@ public class PrivateController {
 		if(userEmail == null) {
 			modelView.setViewName("errors/access_denied");
 			return modelView;
-		}
-		
+		}		
+		List<WaitingListReservationBean> WaitingListReservationBeans = microserviceWaitingListReservationProxy.WaitingListReservationFromUser(userEmail);
+		modelView.addObject("reservationWaitingListSizeList", WaitingListReservationBeans.size());			
 		List<ReservationBean> reservationBeans = microserviceReservationProxy.reservationWithUserEmail(userEmail);
 		int reservationSizeList = reservationBeans.size();
 		modelView.addObject("reservationSizeList", reservationSizeList);

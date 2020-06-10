@@ -21,4 +21,7 @@ public interface MicroserviceWaitingListReservationProxy {
 	
 	@GetMapping(value="/WaitingListReservationCheck/{id_book}/{userEmail}")
 	@ResponseBody boolean WaitingListReservationCheck(@PathVariable int id_book, @PathVariable String userEmail);
+	
+	@GetMapping(value="/WaitingListReservationFromUser/{userEmail}")
+	@ResponseBody List<WaitingListReservationBean> WaitingListReservationFromUser(@PathVariable String userEmail);
 }
