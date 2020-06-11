@@ -226,13 +226,7 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public List<Reservation> reservationListOfUser(int id_user) {		
 		List<Reservation> reservationListOfUser = reservationRepository.reservationListOfUser(id_user);
-		List<Reservation> reservationListOfUserWithoutOutDatedEndingDate = new ArrayList<>();
-		for (Reservation reservation : reservationListOfUser) {
-			if(verificationIfEndingDateIsNotOutdated(reservation.getDate_end()) == true) {
-				reservationListOfUserWithoutOutDatedEndingDate.add(reservation);
-			}
-		}		
-		return reservationListOfUserWithoutOutDatedEndingDate;
+		return reservationListOfUser;
 	}
 
 

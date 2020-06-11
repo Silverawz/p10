@@ -74,11 +74,9 @@ public class ReservationController {
 		List<Boolean> statusList = new ArrayList<>();
 		for (int i = 0 ; i < reservationBeans.size() ; i++) {
 			reservationBeans.get(i).setBook_name(bookBeanList.get(i).getBook_name());
-			if(copyBeanList.get(i).getStatus() == '1') {
-				statusList.add(i, true);
-			}
-			else {
-				statusList.add(i, false);
+			statusList.add(i, false);
+			if(copyBeanList.get(i).getStatus() == '1' && verificationIfEndingDateIsNotOutdated(reservationBeans.get(i).getDate_end())) {
+				statusList.set(i, true);
 			}
 		}	
 		modelView.addObject("reservationlist", reservationBeans);
