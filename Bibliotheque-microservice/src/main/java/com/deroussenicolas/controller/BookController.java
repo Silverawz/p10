@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deroussenicolas.entities.Book;
 import com.deroussenicolas.entities.Reservation;
+import com.deroussenicolas.entities.WaitingListReservation;
 import com.deroussenicolas.service.BookService;
 import com.deroussenicolas.service.ReservationService;
 import com.deroussenicolas.service.UserService;
+import com.deroussenicolas.service.WaitingListService;
 
 @RestController
 public class BookController {
@@ -25,6 +27,8 @@ public class BookController {
 	private ReservationService reservationService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private WaitingListService waitingListService;
 	
 	@GetMapping(value="/Books")
     public @ResponseBody List<Book> listOfAllBooks() {
@@ -63,5 +67,11 @@ public class BookController {
 		return bookService.queueSizeForEachBooks();
     }
     
+    @GetMapping(value = "/WaitingListReservationGettingBook/{id}")
+    public Book waitingListReservationGettingBook(@PathVariable int id) {	
+    	WaitingListReservation waitingListReservation = waitingListService.waitingListReservationById(id);
+    	int book_id = waitingListReservation.getBook().getId_book(); 	
+    	return bookService.findById(book_id);
+    }
     
 }

@@ -35,5 +35,7 @@ public interface MicroserviceBookProxy {
     
     @GetMapping(value = "/Book/QueueSizeForEachsBooks")
     @ResponseBody List<Integer> queueSizeForEachsBooks();
-
+    
+    @GetMapping(value = "/WaitingListReservationGettingBook/{id}")
+    @ResponseBody BookBean waitingListReservationGettingBook(@PathVariable("id") int id);
 }

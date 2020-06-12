@@ -22,4 +22,7 @@ public interface WaitingListReservationRepository extends JpaRepository <Waiting
 	
 	@Query("from WaitingListReservation where user_id_user=?1 and book_id_book=?2 and is_archived=?3 and is_canceled=?4")
 	WaitingListReservation waitingListReservationOfUserBookWithParamsForASingleObject(int user_id, int book_id, boolean is_archived, boolean is_canceled);
+	
+	@Query("from WaitingListReservation where id_waiting_list_reservation=?1")
+	WaitingListReservation waitingListReservationById(int id_waiting_list_reservation);	
 }

@@ -239,6 +239,13 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		reservationRepository.save(reservation4);
 		
 		
+		waitingListReservation = new WaitingListReservation();
+		waitingListReservation.setBook(bookRepository.findAll().get(0));
+		waitingListReservation.setUser(userRepository.findAll().get(0));
+		waitingListReservation.setIs_archived(false);
+		waitingListReservation.setIs_canceled(false);
+		waitingListReservation.setPosition_in_queue(1);
+		waitingListReservationRepository.save(waitingListReservation);	
 		
 		//System.out.println(userService.userOwnTheBookList(18));
 		/*

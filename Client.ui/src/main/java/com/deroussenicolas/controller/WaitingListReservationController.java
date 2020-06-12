@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.deroussenicolas.beans.BookBean;
 import com.deroussenicolas.beans.WaitingListReservationBean;
 import com.deroussenicolas.proxies.MicroserviceBookProxy;
 import com.deroussenicolas.proxies.MicroserviceWaitingListReservationProxy;
@@ -50,6 +51,10 @@ public class WaitingListReservationController {
 			return modelAndView;
 		}
 		List<WaitingListReservationBean> waitingListReservationOfUser = microserviceWaitingListReservationProxy.WaitingListReservationFromUser(userEmail);
+		for (WaitingListReservationBean waitingListReservationBean : waitingListReservationOfUser) {
+			BookBean bookBean = microserviceBookProxy.waitingListReservationGettingBook(waitingListReservationBean.getId_waiting_list_reservation());
+			waitingListReservationBean.setBook(bookBean);
+		}
 		modelAndView.addObject("waitingListReservationOfUser", waitingListReservationOfUser);
 		modelAndView.setViewName("private/waitingListReservation");		
 		return modelAndView;

@@ -3,9 +3,12 @@ package com.deroussenicolas.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -24,8 +27,10 @@ public class WaitingListReservation implements Serializable {
 	@Id @GeneratedValue
 	private int id_waiting_list_reservation;
 	@ManyToOne
+	@NotNull
 	private User user;
 	@ManyToOne
+	@NotNull
 	private Book book;
 	@NotNull
 	private int position_in_queue;
