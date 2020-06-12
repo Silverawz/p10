@@ -35,11 +35,7 @@ public class Application extends SpringBootServletInitializer implements Command
 	private MicroserviceUserProxy microserviceUserProxy;
 	@Autowired   
 	private MicroserviceBookProxy microserviceBookProxy;
-	
-	
-	final static Logger logger = LogManager.getLogger(Application.class);
-	Timer timer = new Timer();
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -51,8 +47,6 @@ public class Application extends SpringBootServletInitializer implements Command
 	
 	@Override
 	public void run(String... args) throws Exception {
-		
-		
 		/*
 		 * Set the time for the batch, here is 2 AM
 		 */
@@ -60,20 +54,19 @@ public class Application extends SpringBootServletInitializer implements Command
 		today.set(Calendar.HOUR_OF_DAY, 2);
 		today.set(Calendar.MINUTE, 0);
 		today.set(Calendar.SECOND, 0);
-
-		
 		/*
 		 * Email batch
 		 * Sending a mail to every user who didnt return back their book according to the reservation date
 		 * Every night at 2 AM, the task will run
 		 */
 		/*
-		Timer timer = new Timer(); timer.schedule(new MyTask(smtpMailSender,microserviceUserProxy, microserviceBookProxy), 
-      	today.getTime(), TimeUnit.MILLISECONDS.convert(1,TimeUnit.DAYS)); // period: 1 day DAYS
-		*/
-		
-		
-		 
+		Timer timer = new Timer(); 
+		timer.schedule(
+				new MyTask(smtpMailSender,microserviceUserProxy, microserviceBookProxy), 
+				today.getTime(), 
+				TimeUnit.MILLISECONDS.convert(1,TimeUnit.DAYS)
+		); */
+		// period: 1 day DAYS 
 	}
 
 }

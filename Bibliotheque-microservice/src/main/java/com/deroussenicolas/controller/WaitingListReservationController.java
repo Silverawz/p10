@@ -50,7 +50,10 @@ public class WaitingListReservationController {
     	}
     	// check if the waitingQueue is full
     	int numberOfRervationWaitingListForABookNotArchivedNorCanceled = numberOfRervationWaitingListForABookNotArchivedNorCanceled(id_book);
-    	if((resultList.get(1)*2) != numberOfRervationWaitingListForABookNotArchivedNorCanceled) {
+    	//check if the user doesnt have already a reservation for that book
+    	int user_id = userService.findByEmail(userEmail).getId_user();
+    	WaitingListReservation waitingListReservationAlreadyExisting = waitingListService.waitingListReservationOfUserBookWithParamsForASingleObject(user_id, id_book, false, false);
+    	if((resultList.get(1)*2) != numberOfRervationWaitingListForABookNotArchivedNorCanceled && waitingListReservationAlreadyExisting == null) {
     		WaitingListReservation waitingListReservation = new WaitingListReservation();
     		waitingListReservation.setBook(bookService.findById(id_book));
     		waitingListReservation.setUser(userService.findByEmail(userEmail));   		
@@ -65,7 +68,8 @@ public class WaitingListReservationController {
 	
 	@GetMapping(value="/WaitingListReservationFromUser/{userEmail}")
     public List<WaitingListReservation> WaitingListReservationFromUser(@PathVariable String userEmail) {
-		return waitingListReservationRepository.waitingListReservationOfUserWithParams(userService.findByEmail(userEmail).getId_user(), false, false);		
+		int user_id = userService.findByEmail(userEmail).getId_user();
+		return waitingListReservationRepository.waitingListReservationOfUserWithParams(user_id, false, false);		
 	}
     
 	private int positionInQueueCalculate(int id_book) {

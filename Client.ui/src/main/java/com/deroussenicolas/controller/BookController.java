@@ -50,17 +50,11 @@ public class BookController {
 				@RequestParam(name="checkbox_number_copies", defaultValue= "off") String checkbox_number_copies,
 				@RequestParam(name="checkbox_author_book", defaultValue= "off") String checkbox_author_book,
 				@RequestParam(name="checkbox_editor_book", defaultValue= "off") String checkbox_editor_book,
-				@RequestParam(name="checkbox_date_back", defaultValue= "off") String checkbox_date_back,
-				@RequestParam(name="checkbox_waiting_queue", defaultValue= "off") String checkbox_waiting_queue,
-				@RequestParam(name="checkbox_reserving", defaultValue= "off") String checkbox_reserving,
 				@SessionAttribute("userEmail") String userEmail) { 		  
-	  ModelAndView modelView = new ModelAndView(); 
-	  
+	  ModelAndView modelView = new ModelAndView();   
 	  List<BookBean> bookBeanList = microServiceBookProxy.listOfAllBooks(); 
-	  List<BookBean> finalBookBeanListWithParameters = insertTheDataInsideTheBookBean(bookBeanList, userEmail);	
-
-	  
-	  
+	  bookBeanList =  insertTheDataInsideTheBookBean(bookBeanList, userEmail);
+	  List<BookBean> finalBookBeanListWithParameters = new ArrayList<>();	
 	  if(!keyWord.equals("")) {
 			for (BookBean bookBean : bookBeanList) {				
 					if(Integer.toString(bookBean.getId_book()).contains(keyWord) && !checkbox_id_book.equals("off")) {
@@ -73,7 +67,7 @@ public class BookController {
 							finalBookBeanListWithParameters.add(bookBean);
 						}	
 					}			
-					if(Integer.toString(bookBean.getCopy_list().size()).contains(keyWord) && !checkbox_number_copies.equals("off")) {
+					if(Integer.toString(bookBean.getNumberOfCopiesAvailable()).contains(keyWord) && !checkbox_number_copies.equals("off")) {
 						if(!(finalBookBeanListWithParameters.contains(bookBean))) {
 							finalBookBeanListWithParameters.add(bookBean);
 						}	
@@ -87,39 +81,13 @@ public class BookController {
 						if(!(finalBookBeanListWithParameters.contains(bookBean))) {
 							finalBookBeanListWithParameters.add(bookBean);				
 						}	
-					}		
-					String dateAsString = null;
-					if(bookBean.getDate_when_book_is_back() != null) {
-						DateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-						dateAsString = simpleDateFormat.format(bookBean.getDate_when_book_is_back());
-						if(dateAsString.contains(keyWord) && !checkbox_date_back.equals("off")) {
-							if(!(finalBookBeanListWithParameters.contains(bookBean))) {
-								finalBookBeanListWithParameters.add(bookBean);
-							}
-						}
-					} else if (keyWord.contains("Disponible")) {
-						finalBookBeanListWithParameters.add(bookBean);
-					}
-
-					if(bookBean.getWaiting_queue().equals(keyWord) && !checkbox_waiting_queue.equals("off")) {
-						if(!(finalBookBeanListWithParameters.contains(bookBean))) {
-							finalBookBeanListWithParameters.add(bookBean);
-						}
-					}
-					//String booleanAsString = Boolean.toString(bookBean.isBook_is_already_reserved_by_user());
-					if(bookBean.isBook_is_already_reserved_by_user() && !checkbox_reserving.equals("off")) {
-						if(!(finalBookBeanListWithParameters.contains(bookBean))) {
-							finalBookBeanListWithParameters.add(bookBean);
-						}
-					}		
+					}			
 					
 					if(checkbox_id_book.equals("off") && checkbox_name_book.equals("off") && checkbox_number_copies.equals("off")
-					&& checkbox_author_book.equals("off") && checkbox_editor_book.equals("off") && checkbox_date_back.equals("off") 
-					&& checkbox_waiting_queue.equals("off") && checkbox_reserving.equals("off")) {					
+					&& checkbox_author_book.equals("off") && checkbox_editor_book.equals("off")) {					
 						if(Integer.toString(bookBean.getId_book()).contains(keyWord) || bookBean.getBook_name().contains(keyWord) ||
 						Integer.toString(bookBean.getCopy_list().size()).contains(keyWord) || bookBean.getBook_author().contains(keyWord) ||
-						bookBean.getBook_editor().contains(keyWord) || dateAsString.contains(keyWord) || bookBean.getWaiting_queue().equals(keyWord)
-						&& !(finalBookBeanListWithParameters.contains(bookBean))) {
+						bookBean.getBook_editor().contains(keyWord) && !(finalBookBeanListWithParameters.contains(bookBean))) {
 							finalBookBeanListWithParameters.add(bookBean);					
 						}		
 					}
@@ -127,43 +95,14 @@ public class BookController {
 			modelView.addObject("booklist", finalBookBeanListWithParameters);
 	  }	    
 	  else {
-		 // modelView.addObject("booklist", bookBeanList); 	
 		 modelView.addObject("booklist", bookBeanList);
 	  }
-	  
-	  
-	  // avoir les trois elements suivants ici :
-	  // 1 reserver un exemplaire en boolean, 
-	  // 2 date de retour prévenue pour l'exemplaire le plus proche de la date actuel pour un livre
-	  // 3 et enfin la file d'attente du livre en question
-	  
-	  
-	  
-	  /*   1
-	  int id_user = microserviceUserProxy.loadUserByUsername(userEmail).getId_user();
-	  List<Boolean> booksOwnedByUserInOrderAsBoolean = microserviceUserProxy.booksOwnedByUserInOrderAsBoolean(id_user);
-	  
-
-
-			2
-	  List<Date> lastReservationForEachBooks = microServiceBookProxy.lastRevervationForEachBooks();
-	  
-	        3
-	        
-	  List<Integer> queueSizeForEachsBooks = microServiceBookProxy.queueSizeForEachsBooks();
-		
-	  */
-
-
 	  modelView.addObject("keyWord", keyWord);
 	  modelView.addObject("checkbox_id_book", checkbox_id_book);
 	  modelView.addObject("checkbox_name_book", checkbox_name_book);
 	  modelView.addObject("checkbox_number_copies", checkbox_number_copies);
 	  modelView.addObject("checkbox_author_book", checkbox_author_book);
 	  modelView.addObject("checkbox_editor_book", checkbox_editor_book);
-	  modelView.addObject("checkbox_date_back", checkbox_date_back);
-	  modelView.addObject("checkbox_waiting_queue", checkbox_waiting_queue);
-	  modelView.addObject("checkbox_reserving", checkbox_reserving);
 	  modelView.setViewName("book/booklist"); 	  
 	  return modelView; 	  
 	  }

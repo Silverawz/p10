@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.deroussenicolas.beans.WaitingListReservationBean;
+import com.deroussenicolas.proxies.MicroserviceBookProxy;
 import com.deroussenicolas.proxies.MicroserviceWaitingListReservationProxy;
 
 @Controller
@@ -20,7 +21,8 @@ public class WaitingListReservationController {
 	
 	@Autowired
 	private MicroserviceWaitingListReservationProxy microserviceWaitingListReservationProxy;
-	
+	@Autowired
+	private MicroserviceBookProxy microserviceBookProxy;
 	
 	@GetMapping("/reservation") 
 	public ModelAndView waitingListReservationByBookId(@RequestParam(name="id_book") int id_book, @SessionAttribute("userEmail") String userEmail) {
@@ -32,7 +34,8 @@ public class WaitingListReservationController {
 		//try to insert the reservation , true =accepted, false=refused	
 		boolean validation = microserviceWaitingListReservationProxy.WaitingListReservationCheck(id_book, userEmail); 
 		if(validation) {// if true = reservation valided
-			modelAndView.setViewName("errors/access_denied");			
+			modelAndView.addObject("book", microserviceBookProxy.oneBookWithId(id_book));
+			modelAndView.setViewName("private/waitingListReservationApproved");			
 		} else { // else reservation refused
 			modelAndView.setViewName("errors/access_denied");
 		}		

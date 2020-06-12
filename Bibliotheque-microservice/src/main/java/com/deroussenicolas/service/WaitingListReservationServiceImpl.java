@@ -45,6 +45,12 @@ public class WaitingListReservationServiceImpl implements WaitingListService {
 	public List<WaitingListReservation> waitingListReservationOfBookWithParams(int book_id, boolean is_archived, boolean is_canceled) {
 		return waitingListRepository.waitingListReservationOfBookWithParams(book_id, is_archived, is_canceled);
 	}
+
+	@Override
+	public WaitingListReservation waitingListReservationOfUserBookWithParamsForASingleObject(int user_id, int book_id,
+			boolean is_archived, boolean is_canceled) {
+		return waitingListRepository.waitingListReservationOfUserBookWithParamsForASingleObject(user_id, book_id, is_archived, is_canceled);
+	}
 	
 	
 }
