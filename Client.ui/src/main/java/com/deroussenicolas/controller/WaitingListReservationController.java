@@ -59,4 +59,25 @@ public class WaitingListReservationController {
 		modelAndView.setViewName("private/waitingListReservation");		
 		return modelAndView;
 	}
+	
+	@GetMapping("/cancelReservationWaitingList")
+	public ModelAndView showAllReservationWaitingList(@SessionAttribute("userEmail") String userEmail, 
+			@RequestParam(name="id_waiting_list_reservation") int id_waiting_list_reservation) {
+		ModelAndView modelAndView = new ModelAndView();
+		if(userEmail == null) {
+			modelAndView.setViewName("errors/access_denied");
+			return modelAndView;
+		}
+		boolean result = microserviceWaitingListReservationProxy.WaitingListReservationCancel(id_waiting_list_reservation, userEmail);
+		if(result) {	
+			BookBean bookBean = microserviceBookProxy.waitingListReservationGettingBook(id_waiting_list_reservation);
+			int id_book = bookBean.getId_book();
+			modelAndView.addObject("book", microserviceBookProxy.oneBookWithId(id_book));
+			modelAndView.setViewName("private/waitingListReservationCanceled");	
+		} else {
+			//to do
+			modelAndView.setViewName("errors/access_denied");
+		}
+		return modelAndView;	
+	}
 }

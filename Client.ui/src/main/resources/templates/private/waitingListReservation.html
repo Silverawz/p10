@@ -14,22 +14,26 @@
 				<div class="panel-body table-responsive">
 					<table class="display table table-striped table-hover">
 						<tr>
+							<!-- <th>ID de la reservation</th>-->
 							<th>Date reçu pour récuperer le livre</th>
-							<th>Est archivé</th>
 							<th>Est annulé</th>
 							<th>Position dans la file d'attente</th>							
 							<th>nom du book</th>
 							
 						<tr th:each="s,iterStat:${waitingListReservationOfUser}">
+							<!--<td th:text=${s.id_waiting_list_reservation}></td>-->
 							<td th:text=${s.date_mail_send}></td>
-							<td th:text=${s.is_archived}></td>	
 							<td th:text=${s.is_canceled}></td>					
 							<td th:text=${s.position_in_queue}></td>
 							<td th:text=${s.book.book_name}></td>			
 						
-							<td>
-							<a th:href="@{/cancelReservation(id=${s.id_waiting_list_reservation})}">Annuler la reservation pour ce livre</a>
+							<td th:if="${s.is_canceled == false}">
+								<a th:href="@{/cancelReservationWaitingList(id_waiting_list_reservation=${s.id_waiting_list_reservation})}">Annuler la reservation pour ce livre</a>
 							</td>
+							
+							<!--  <td>
+							<a th:href="@{/cancelReservationWaitingList(id=${s.id_waiting_list_reservation})}">Annuler la reservation pour ce livre</a>
+							</td>-->
 						</tr>
 					</table>
 				</div>
