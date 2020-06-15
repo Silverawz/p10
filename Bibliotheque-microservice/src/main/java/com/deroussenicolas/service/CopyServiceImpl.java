@@ -60,4 +60,9 @@ public class CopyServiceImpl implements CopyService {
 		return numberOfCopiesNotAvailableForEachBooks; 
 	}
 
+	@Override
+	public List<Copy> findCopiesAvailableByBookId(char status, int book_id) {
+		return copyRepository.findCopiesAvailableByBookId(status, book_id);
+	}
+
 }

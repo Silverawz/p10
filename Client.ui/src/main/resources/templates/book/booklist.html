@@ -31,10 +31,10 @@
 						<label for="control-label">Recherche personnalisée avec mot clé</label>
 
 						<div class="checkboxes">
-							<label class="checkbox-inline"> 
+							<!--  <label class="checkbox-inline"> 
 							<input type="checkbox" name="checkbox_id_book" th:checked="${checkbox_id_book}" /> 
 							ID
-							</label> 
+							</label> -->
 							<label class="checkbox-inline"> 
 							<input type="checkbox" name="checkbox_name_book" th:checked="${checkbox_name_book}" /> 
 							Nom du livre
@@ -66,7 +66,7 @@
 				<div class="panel-body">
 					<table class="display table table-striped table-hover">
 						<tr>
-							<th>ID du livre</th>
+							<!--  <th>ID du livre</th>-->
 							<th>Nom du livre</th>
 							<th>Nombre d'exemplaire(s) disponible</th>
 							<th>Auteur</th>
@@ -76,7 +76,7 @@
 							<th>Reserver un exemplaire</th>
 							
 						<tr th:each="s:${booklist}">
-							<td th:text=${s.id_book}></td>
+							<!--  <td th:text=${s.id_book}></td>-->
 							<td th:text=${s.book_name}></td>
 							<td th:text=${s.numberOfCopiesAvailable}></td>
 							<td th:text=${s.book_author}></td>

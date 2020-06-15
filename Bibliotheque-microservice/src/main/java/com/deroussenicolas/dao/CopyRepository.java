@@ -17,4 +17,7 @@ public interface CopyRepository extends JpaRepository <Copy, Long>{
 	
 	@Query("from Copy where status=?1")
 	List<Copy> findCopiesAvailable(char status);
+	
+	@Query("from Copy where status=?1 and book_id_book=?2")
+	List<Copy> findCopiesAvailableByBookId(char status, int book_id);	
 }

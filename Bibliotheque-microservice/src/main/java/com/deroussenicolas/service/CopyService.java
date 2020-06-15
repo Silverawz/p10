@@ -15,4 +15,6 @@ public interface CopyService {
 	void save(Copy copyOfTheReservation);
 
 	List<Integer> numberOfCopiesNotAvailableForEachBook();
+	
+	List<Copy> findCopiesAvailableByBookId(char status, int book_id);
 }

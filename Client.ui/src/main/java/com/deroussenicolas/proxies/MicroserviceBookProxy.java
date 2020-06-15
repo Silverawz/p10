@@ -3,7 +3,7 @@ package com.deroussenicolas.proxies;
 import java.util.Date;
 import java.util.List;
 
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +17,7 @@ import com.deroussenicolas.beans.BookBean;
 //For deploying on tomcat you need that url below
 //@FeignClient(name="bibliotheque-microservice", url = "http://localhost:8081/Bibliotheque-microservice-0.0.1-SNAPSHOT")
 public interface MicroserviceBookProxy {
+	
 	
 	@GetMapping(value="/Books")
 	@ResponseBody List<BookBean> listOfAllBooks();

@@ -2,6 +2,10 @@ package com.deroussenicolas;
 
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -239,6 +243,20 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		reservationRepository.save(reservation4);
 		
 		
+		/*
+		Reservation reservation40 = new Reservation();
+		Copy copyId11 = copyRepository.findById(11);
+		reservation40.setCopy(copyId11);
+		reservation40.setDate_begin("06.06.2020");
+		reservation40.setDate_end("13.08.2020");
+		reservation40.setIs_archived(false);
+		reservation40.setUser(user2);
+		copyId11.setStatus('1');
+		copyRepository.save(copyId11);
+		reservationRepository.save(reservation40);
+		*/
+		
+		
 		waitingListReservation = new WaitingListReservation();
 		waitingListReservation.setBook(bookRepository.findAll().get(0));
 		waitingListReservation.setUser(userRepository.findAll().get(0));
@@ -271,6 +289,10 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		waitingListReservation3.setPosition_in_queue(34);
 		waitingListReservationRepository.save(waitingListReservation3);	
 		
+		
+		Calendar calendar = Calendar.getInstance(); 
+		calendar.set(2020, 5, 13, 14, 58);
+		BookService.compareDateOfWaitingListReservation(calendar.getTime());
 		
 		//System.out.println(userService.userOwnTheBookList(18));
 		/*

@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -35,7 +36,7 @@ public class Application extends SpringBootServletInitializer implements Command
 	private MicroserviceUserProxy microserviceUserProxy;
 	@Autowired   
 	private MicroserviceBookProxy microserviceBookProxy;
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}

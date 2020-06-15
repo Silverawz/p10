@@ -1,11 +1,15 @@
 package com.deroussenicolas.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,7 @@ import com.deroussenicolas.dao.BookRepository;
 import com.deroussenicolas.dao.ReservationRepository;
 import com.deroussenicolas.dao.WaitingListReservationRepository;
 import com.deroussenicolas.entities.Book;
+import com.deroussenicolas.entities.Copy;
 import com.deroussenicolas.entities.Reservation;
 import com.deroussenicolas.entities.WaitingListReservation;
 
@@ -126,5 +131,71 @@ public class BookServiceImpl implements BookService {
 		return queueSizeForEeachBooks;
 	}
 
+	
+	
+	public void batchBook() {
+		List<Book> bookList = bookRepository.findAll();
+		List<WaitingListReservation> waitingListReservationToSendEmailForEachBook = new ArrayList<>();
+		for (Book book : bookList) {
+			//Pour chaque livre : 
+			//si exemplaires disponibles > 0 
+			List<Copy> copyAvailableByBookId = copyService.findCopiesAvailableByBookId('0', book.getId_book());
+			
+			
+			//AND liste des réservations > 0
+			List<WaitingListReservation> waitingListForTheBook = waitingListReservationRepository.waitingListReservationOfBookWithParams(book.getId_book(), false, false);
+			
+			if(copyAvailableByBookId.size() > 0 && waitingListForTheBook.size() > 0) {		
+				A : for (WaitingListReservation waitingListReservation : waitingListForTheBook) {
+					if (waitingListReservation.getPosition_in_queue() == 1) {
+						if (waitingListReservation.getDate_mail_send() == null) {
+							//envoyer le mail et rajouter la date d'envoi
+							waitingListReservation.setDate_mail_send(new Date());
+							waitingListReservationRepository.save(waitingListReservation);
+							waitingListReservationToSendEmailForEachBook.add(waitingListReservation);
+							break A;
+						} else if (waitingListReservation.getDate_mail_send() != null) {
+							//check if date is 48 hour old past, if yes then delete the waitingListReservation
+							boolean verificationDate = compareDateOfWaitingListReservation(waitingListReservation.getDate_mail_send());
+							if(!verificationDate) {
+								waitingListReservationRepository.delete(waitingListReservation);
+								
+								//date mail < 48H
+								/*
+								alors
+								supprimer réservation
+								modifier position dans la liste
+								envoyer mail au nouveau position 1
+								*/
+							} else {
+								//date mail >= 48H
+								// do nothing
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	// 12
+	// verifier que le 14 ne soit pas depassé
+	
+	
+	
+	public boolean compareDateOfWaitingListReservation(Date date) {
+		boolean result = false;		
+		Calendar calendarOfArgumentDate = Calendar.getInstance(); 
+		calendarOfArgumentDate.setTime(date);
+		calendarOfArgumentDate.add(Calendar.HOUR_OF_DAY, 48); // adds 48 hour	
+		Calendar calendarActualDateToday = Calendar.getInstance();
+		calendarActualDateToday.setTime(new Date());			
+		if (calendarOfArgumentDate.compareTo(calendarActualDateToday) > 0) {
+			result = true;
+		} 
+		return result;
+	}
+	
 	
 }

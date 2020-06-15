@@ -16,14 +16,15 @@
 						<tr>
 							<!-- <th>ID de la reservation</th>-->
 							<th>Date reçu pour récuperer le livre</th>
-							<th>Est annulé</th>
+							<th>Statut</th>
 							<th>Position dans la file d'attente</th>							
 							<th>nom du book</th>
 							
 						<tr th:each="s,iterStat:${waitingListReservationOfUser}">
 							<!--<td th:text=${s.id_waiting_list_reservation}></td>-->
 							<td th:text=${s.date_mail_send}></td>
-							<td th:text=${s.is_canceled}></td>					
+							<td th:text="${s.is_canceled == true} ? 'Annulé' : 'En cours'"></td>
+							<!--  <td th:text=${s.is_canceled}></td>	-->				
 							<td th:text=${s.position_in_queue}></td>
 							<td th:text=${s.book.book_name}></td>			
 						
