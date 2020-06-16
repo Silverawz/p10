@@ -109,15 +109,10 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<Integer> queueSizeForEachBooks() {
 		List<Integer> queueSizeForEeachBooks = new ArrayList<>();
-		List<Book> listAllBooks = bookRepository.findAll();
-		
-		List<WaitingListReservation> listWaitingListReservation = waitingListReservationRepository.waitingListReservationWithParams(false, false);
-		
+		List<Book> listAllBooks = bookRepository.findAll();		
+		List<WaitingListReservation> listWaitingListReservation = waitingListReservationRepository.waitingListReservationWithParams(false, false);	
 		//recuperer le nombre de copy pour chaque book		
 		//copyService.numberOfCopiesNotAvailableForEachBook(); // *2 to respect the rules
-		
-		
-		
 		//calculer le nombre de personne dans la liste
 		for (Book book : listAllBooks) {
 			int incrementalNumber = 0;
@@ -133,54 +128,106 @@ public class BookServiceImpl implements BookService {
 
 	
 	
-	public void batchBook() {
+	public List<WaitingListReservation> batchBook() {
 		List<Book> bookList = bookRepository.findAll();
 		List<WaitingListReservation> waitingListReservationToSendEmailForEachBook = new ArrayList<>();
 		for (Book book : bookList) {
 			//Pour chaque livre : 
-			//si exemplaires disponibles > 0 
 			List<Copy> copyAvailableByBookId = copyService.findCopiesAvailableByBookId('0', book.getId_book());
-			
-			
-			//AND liste des réservations > 0
 			List<WaitingListReservation> waitingListForTheBook = waitingListReservationRepository.waitingListReservationOfBookWithParams(book.getId_book(), false, false);
-			
-			if(copyAvailableByBookId.size() > 0 && waitingListForTheBook.size() > 0) {		
-				A : for (WaitingListReservation waitingListReservation : waitingListForTheBook) {
-					if (waitingListReservation.getPosition_in_queue() == 1) {
-						if (waitingListReservation.getDate_mail_send() == null) {
-							//envoyer le mail et rajouter la date d'envoi
-							waitingListReservation.setDate_mail_send(new Date());
-							waitingListReservationRepository.save(waitingListReservation);
-							waitingListReservationToSendEmailForEachBook.add(waitingListReservation);
-							break A;
-						} else if (waitingListReservation.getDate_mail_send() != null) {
-							//check if date is 48 hour old past, if yes then delete the waitingListReservation
-							boolean verificationDate = compareDateOfWaitingListReservation(waitingListReservation.getDate_mail_send());
-							if(!verificationDate) {
-								waitingListReservationRepository.delete(waitingListReservation);
-								
-								//date mail < 48H
-								/*
-								alors
-								supprimer réservation
-								modifier position dans la liste
-								envoyer mail au nouveau position 1
-								*/
-							} else {
-								//date mail >= 48H
-								// do nothing
-							}
-						}
-					}
-				}
+			//si exemplaires disponibles > 0 AND liste des réservations > 0
+			if (copyAvailableByBookId.size() > 0 && waitingListForTheBook.size() > 0) {
+				//en return il doit y avoir un objet WaitingListReservation	ajouté à la liste		
+				waitingListReservationToSendEmailForEachBook.add(algoBatch(waitingListForTheBook, book.getId_book()));
 			}
 		}
+		return waitingListReservationToSendEmailForEachBook;
+	}
+
+	
+	private WaitingListReservation algoBatch(List<WaitingListReservation> waitingListForTheBook, int book_id) {
+		WaitingListReservation waitingListReservationReturned = new WaitingListReservation();
+		int index_waitingListReservation_first_in_queue = checkTheFirstInTheQueueForWaitingListForTheBook(waitingListForTheBook);
+		try {
+			waitingListForTheBook.get(index_waitingListReservation_first_in_queue);
+		} catch (Exception e) {
+			return null;
+		}
+		WaitingListReservation waitingListReservation = waitingListForTheBook.get(index_waitingListReservation_first_in_queue);
+		if (waitingListReservation.getDate_mail_send() == null) {
+			//envoyer le mail et rajouter la date d'envoi
+			
+			System.err.println("a reçu le mail = "+waitingListReservation.getId_waiting_list_reservation());
+			
+			waitingListReservation.setDate_mail_send(new Date());
+			waitingListReservationRepository.save(waitingListReservation);
+			waitingListReservationReturned = waitingListReservation;
+		} else if (waitingListReservation.getDate_mail_send() != null) {
+			//check if date is 48 hour old past, if yes then delete the waitingListReservation
+			boolean verificationDate = compareDateOfWaitingListReservation(waitingListReservation.getDate_mail_send());
+			if(!verificationDate) {
+				waitingListForTheBook.remove(waitingListReservation);
+				waitingListReservationRepository.delete(waitingListReservation);
+				// modifier position dans la liste
+				int positionInTheQueue = 1;
+				while (!waitingListForTheBook.isEmpty()) {
+					waitingListForTheBook = recalculatePositionInTheQueueForTheWaitingListReservation(waitingListForTheBook, positionInTheQueue);
+					positionInTheQueue++;
+				}
+				//repeter le batch pour trouver un nouveau 1er
+				algoBatch(waitingListReservationRepository.waitingListReservationOfBookWithParams(book_id, false, false), book_id);
+			} else {
+				return null;
+			}
+		}
+		return waitingListReservationReturned;
+	}
+	
+
+	private List<WaitingListReservation> recalculatePositionInTheQueueForTheWaitingListReservation(List<WaitingListReservation> waitingListReservation, int positionInTheQueue) {
+		List<WaitingListReservation> listToCompare = waitingListReservation;
+		int id_current_WaitingListReservation_closest_to_zero = 0;
+		int position_in_queue_closest_to_zero = 0;		
+		int index_of_lowest_position = 0;
+		if (listToCompare.size() >= 2) {
+			for (int i = 0; i < listToCompare.size(); i++) {			
+				int position_in_queue_forCurrentReservation = listToCompare.get(i).getPosition_in_queue();	
+				if (position_in_queue_forCurrentReservation < position_in_queue_closest_to_zero || position_in_queue_closest_to_zero == 0) {	
+					id_current_WaitingListReservation_closest_to_zero = listToCompare.get(i).getId_waiting_list_reservation();
+					position_in_queue_closest_to_zero = position_in_queue_forCurrentReservation;
+					index_of_lowest_position = i;
+				}	
+			}	
+			listToCompare.remove(index_of_lowest_position);
+			WaitingListReservation waitingListReservationToSave = waitingListReservationRepository.waitingListReservationById(id_current_WaitingListReservation_closest_to_zero);
+			waitingListReservationToSave.setPosition_in_queue(positionInTheQueue);
+			waitingListReservationRepository.save(waitingListReservationToSave);		
+		} else if (listToCompare.size() == 1) {	
+			WaitingListReservation waitingListReservationToSave = waitingListReservationRepository.waitingListReservationById(listToCompare.get(0).getId_waiting_list_reservation());
+			waitingListReservationToSave.setPosition_in_queue(positionInTheQueue);
+			waitingListReservationRepository.save(waitingListReservationToSave);	
+			listToCompare.remove(0);
+		}	
+		return listToCompare; // return the list to compare again with the next position in queue
 	}
 	
 	
-	// 12
-	// verifier que le 14 ne soit pas depassé
+	
+	
+	
+	
+	
+	private int checkTheFirstInTheQueueForWaitingListForTheBook(List<WaitingListReservation> waitingListForTheBook) {
+		int result = 0;
+		A : for (int i = 0; i < waitingListForTheBook.size(); i++) {
+			if (waitingListForTheBook.get(i).getPosition_in_queue() == 1) {
+				result = i;
+				break A;
+			}
+		}
+		return result; // return the index of the reservation who is first in the queue
+	}
+	
 	
 	
 	

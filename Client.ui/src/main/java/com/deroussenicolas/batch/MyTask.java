@@ -1,6 +1,7 @@
 package com.deroussenicolas.batch;
 
 import java.util.List;
+
 import java.util.TimerTask;
 
 import javax.mail.MessagingException;

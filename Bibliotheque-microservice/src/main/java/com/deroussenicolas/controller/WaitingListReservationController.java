@@ -113,8 +113,8 @@ public class WaitingListReservationController {
 		int id_current_WaitingListReservation_closest_to_zero = 0;
 		int position_in_queue_closest_to_zero = 0;		
 		int index_of_lowest_position = 0;
-		if(listToCompare.size() >= 2) {
-			for(int i = 0; i < listToCompare.size(); i++) {
+		if (listToCompare.size() >= 2) {
+			for (int i = 0; i < listToCompare.size(); i++) {
 				String splitInformation[] = listToCompare.get(i).split("/");			
 				int id_current_waitingListReservation = Integer.parseInt(splitInformation[0]);
 				int position_in_queue_forCurrentReservation = Integer.parseInt(splitInformation[1]);
@@ -128,7 +128,7 @@ public class WaitingListReservationController {
 			WaitingListReservation waitingListReservation = waitingListReservationRepository.waitingListReservationById(id_current_WaitingListReservation_closest_to_zero);
 			waitingListReservation.setPosition_in_queue(positionInTheQueue);
 			waitingListReservationRepository.save(waitingListReservation);		
-		} else if(listToCompare.size() == 1){			
+		} else if (listToCompare.size() == 1){			
 			String splitInformation[] = listToCompare.get(0).split("/");			
 			int id_current_waitingListReservation = Integer.parseInt(splitInformation[0]);
 			WaitingListReservation waitingListReservation = waitingListReservationRepository.waitingListReservationById(id_current_waitingListReservation);

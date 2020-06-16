@@ -1,7 +1,8 @@
 package com.deroussenicolas;
 
 
-
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +16,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.deroussen.batch.MyTask;
 import com.deroussenicolas.dao.BookRepository;
 import com.deroussenicolas.dao.CopyRepository;
 import com.deroussenicolas.dao.ReservationRepository;
@@ -191,7 +193,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 			user2.setPassword(new BCryptPasswordEncoder().encode("123456"));
 			userRepository.save(user2);
 		
-		
+		/*
 		Reservation reservation = new Reservation();
 		reservation.setCopy(copy);
 		reservation.setDate_begin("07.06.2020");
@@ -241,7 +243,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		copy1.setStatus('1');
 		copyRepository.save(copy5);
 		reservationRepository.save(reservation4);
-		
+		*/
 		
 		/*
 		Reservation reservation40 = new Reservation();
@@ -256,13 +258,18 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		reservationRepository.save(reservation40);
 		*/
 		
+		Calendar calendar = Calendar.getInstance(); 
+		calendar.set(2020, 5, 13, 14, 58);
+		Date date = calendar.getTime();
 		
+		/*
 		waitingListReservation = new WaitingListReservation();
 		waitingListReservation.setBook(bookRepository.findAll().get(0));
 		waitingListReservation.setUser(userRepository.findAll().get(0));
 		waitingListReservation.setIs_archived(false);
 		waitingListReservation.setIs_canceled(false);
-		waitingListReservation.setPosition_in_queue(12);
+		waitingListReservation.setPosition_in_queue(1);
+		waitingListReservation.setDate_mail_send(date);
 		waitingListReservationRepository.save(waitingListReservation);	
 		
 		WaitingListReservation waitingListReservation1 = new WaitingListReservation();
@@ -270,7 +277,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		waitingListReservation1.setUser(userRepository.findAll().get(1));
 		waitingListReservation1.setIs_archived(false);
 		waitingListReservation1.setIs_canceled(false);
-		waitingListReservation1.setPosition_in_queue(40);
+		waitingListReservation1.setPosition_in_queue(1);
 		waitingListReservationRepository.save(waitingListReservation1);			
 		
 		WaitingListReservation waitingListReservation2 = new WaitingListReservation();
@@ -278,7 +285,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		waitingListReservation2.setUser(userRepository.findAll().get(2));
 		waitingListReservation2.setIs_archived(false);
 		waitingListReservation2.setIs_canceled(false);
-		waitingListReservation2.setPosition_in_queue(23);
+		waitingListReservation2.setPosition_in_queue(3);
 		waitingListReservationRepository.save(waitingListReservation2);
 		
 		WaitingListReservation waitingListReservation3 = new WaitingListReservation();
@@ -286,13 +293,65 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		waitingListReservation3.setUser(userRepository.findAll().get(3));
 		waitingListReservation3.setIs_archived(false);
 		waitingListReservation3.setIs_canceled(false);
-		waitingListReservation3.setPosition_in_queue(34);
+		waitingListReservation3.setPosition_in_queue(2);
 		waitingListReservationRepository.save(waitingListReservation3);	
+		*/
+		
+		for (int i = 0; i < 8 ; i ++) {
+			WaitingListReservation waitingListReservationloop = new WaitingListReservation();
+			waitingListReservationloop.setBook(bookRepository.findAll().get(1));
+			waitingListReservationloop.setUser(userRepository.findAll().get(3));
+			waitingListReservationloop.setIs_archived(false);
+			waitingListReservationloop.setIs_canceled(false);
+			waitingListReservationloop.setPosition_in_queue(i+1);
+			
+			
+			if(i == 0 || i == 1 || i == 2) {
+				Calendar calendarr = Calendar.getInstance(); 
+				calendarr.set(2019, 3, i);
+				Date dateee = calendarr.getTime();
+				waitingListReservationloop.setDate_mail_send(dateee);
+			} 
+			waitingListReservationRepository.save(waitingListReservationloop);	
+		}
+		
+		for (int i = 0; i < 8 ; i ++) {
+			WaitingListReservation waitingListReservationloop = new WaitingListReservation();
+			waitingListReservationloop.setBook(bookRepository.findAll().get(2));
+			waitingListReservationloop.setUser(userRepository.findAll().get(3));
+			waitingListReservationloop.setIs_archived(false);
+			waitingListReservationloop.setIs_canceled(false);
+			waitingListReservationloop.setPosition_in_queue(i+1);
+			
+			if(i == 0 || i == 1 || i == 2) {
+				Calendar calendarr = Calendar.getInstance(); 
+				calendarr.set(2019, 3, i);
+				Date dateee = calendarr.getTime();
+				waitingListReservationloop.setDate_mail_send(dateee);
+			} 
+			waitingListReservationRepository.save(waitingListReservationloop);	
+		}
+		
+		for (int i = 0; i < 8 ; i ++) {
+			WaitingListReservation waitingListReservationloop = new WaitingListReservation();
+			waitingListReservationloop.setBook(bookRepository.findAll().get(3));
+			waitingListReservationloop.setUser(userRepository.findAll().get(3));
+			waitingListReservationloop.setIs_archived(false);
+			waitingListReservationloop.setIs_canceled(false);
+			waitingListReservationloop.setPosition_in_queue(i+1);
+			
+			if(i == 0 || i == 1 || i == 2) {
+				Calendar calendarr = Calendar.getInstance(); 
+				calendarr.set(2019, 3, i);
+				Date dateee = calendarr.getTime();
+				waitingListReservationloop.setDate_mail_send(dateee);
+			} 
+			waitingListReservationRepository.save(waitingListReservationloop);	
+		}
 		
 		
-		Calendar calendar = Calendar.getInstance(); 
-		calendar.set(2020, 5, 13, 14, 58);
-		BookService.compareDateOfWaitingListReservation(calendar.getTime());
+		System.out.println("result="+BookService.batchBook().size());
+		
 		
 		//System.out.println(userService.userOwnTheBookList(18));
 		/*
@@ -352,6 +411,28 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		System.err.println("taille de la liste de date = "+reservationService.lastRevervationForEachBooks().size());
 		*/
 		
+		/*
+		 * Set the time for the batch, here is 2 AM
+		 */
+		/*
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 2);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		*/
+		/*
+		 * Email batch
+		 * Sending a mail to every user who didnt return back their book according to the reservation date
+		 * Every night at 2 AM, the task will run
+		 */
+		/*
+		Timer timer = new Timer(); 
+		timer.schedule(
+				new MyTask(smtpMailSender,microserviceUserProxy, microserviceBookProxy), 
+				today.getTime(), 
+				TimeUnit.MILLISECONDS.convert(1,TimeUnit.HOURS)
+		); */
+		// period: 1 day DAYS 
 		
 	}
 
