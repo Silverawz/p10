@@ -35,7 +35,8 @@ import com.deroussenicolas.service.UserService;
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class BibliothequeMicroserviceApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
-	
+	@Autowired
+	private SmtpMailSender smtpMailSender;
 	private WaitingListReservation waitingListReservation;
 	@Autowired
 	private WaitingListReservationRepository waitingListReservationRepository;
@@ -425,8 +426,10 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		 * Sending a mail to every user who didnt return back their book according to the reservation date
 		 * Every night at 2 AM, the task will run
 		 */
-		/*
+		Calendar today = Calendar.getInstance();
 		Timer timer = new Timer(); 
+		timer.schedule(new MyTask(BookService), today.getTime(), 1000*30); // every hours
+		/*
 		timer.schedule(
 				new MyTask(smtpMailSender,microserviceUserProxy, microserviceBookProxy), 
 				today.getTime(), 

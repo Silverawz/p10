@@ -11,9 +11,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.deroussenicolas.SmtpMailSender;
 import com.deroussenicolas.dao.BookRepository;
 import com.deroussenicolas.dao.ReservationRepository;
 import com.deroussenicolas.dao.WaitingListReservationRepository;
@@ -33,6 +36,8 @@ public class BookServiceImpl implements BookService {
 	private CopyService copyService;
 	@Autowired
 	private WaitingListReservationRepository waitingListReservationRepository;
+	@Autowired
+	private SmtpMailSender smtpMailSender;
 	
 	@Override
 	public List<Book> getAllBooksForEmail() {
@@ -156,7 +161,8 @@ public class BookServiceImpl implements BookService {
 		WaitingListReservation waitingListReservation = waitingListForTheBook.get(index_waitingListReservation_first_in_queue);
 		if (waitingListReservation.getDate_mail_send() == null) {
 			//envoyer le mail et rajouter la date d'envoi
-			
+			sendingEmail(waitingListReservation);
+			// TO DO smtpMailSender.send(to, subject, body);
 			System.err.println("a reçu le mail = "+waitingListReservation.getId_waiting_list_reservation());
 			
 			waitingListReservation.setDate_mail_send(new Date());
@@ -184,6 +190,20 @@ public class BookServiceImpl implements BookService {
 	}
 	
 
+	private void sendingEmail(WaitingListReservation waitingListReservation) {
+		String userEmail = waitingListReservation.getUser().getEmail();
+		String bookName = waitingListReservation.getBook().getBook_name();
+		try {
+			smtpMailSender.send(userEmail,   bookName + " is available", 
+			"Hello, you have made a reservation for the book named : " + bookName + " . We are happy to announce you the book is available in the library. "
+		    + "Your have 48 hours to claim the book otherwise your reservation will be canceled automatically. Have a nice day! "); 
+		}
+		catch (MessagingException e) {
+			e.printStackTrace(); 
+		}	
+	}
+	
+	
 	private List<WaitingListReservation> recalculatePositionInTheQueueForTheWaitingListReservation(List<WaitingListReservation> waitingListReservation, int positionInTheQueue) {
 		List<WaitingListReservation> listToCompare = waitingListReservation;
 		int id_current_WaitingListReservation_closest_to_zero = 0;
