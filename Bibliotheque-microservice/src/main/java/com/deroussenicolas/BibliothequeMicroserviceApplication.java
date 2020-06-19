@@ -70,7 +70,6 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 	public void run(String... args) throws Exception {
 		
 
-			/*
 
 			
 
@@ -79,7 +78,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 
 			
 
-		*/
+		
 		
 		
 		Book book = new Book();
@@ -257,12 +256,12 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		copyId11.setStatus('1');
 		copyRepository.save(copyId11);
 		reservationRepository.save(reservation40);
-		*/
+	
 		
 		Calendar calendar = Calendar.getInstance(); 
 		calendar.set(2020, 5, 13, 14, 58);
 		Date date = calendar.getTime();
-		
+			*/
 		/*
 		waitingListReservation = new WaitingListReservation();
 		waitingListReservation.setBook(bookRepository.findAll().get(0));
@@ -297,7 +296,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		waitingListReservation3.setPosition_in_queue(2);
 		waitingListReservationRepository.save(waitingListReservation3);	
 		*/
-		
+		/*
 		for (int i = 0; i < 8 ; i ++) {
 			WaitingListReservation waitingListReservationloop = new WaitingListReservation();
 			waitingListReservationloop.setBook(bookRepository.findAll().get(1));
@@ -349,9 +348,8 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 			} 
 			waitingListReservationRepository.save(waitingListReservationloop);	
 		}
+		*/
 		
-		
-		System.out.println("result="+BookService.batchBook().size());
 		
 		
 		//System.out.println(userService.userOwnTheBookList(18));
@@ -426,10 +424,12 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		 * Sending a mail to every user who didnt return back their book according to the reservation date
 		 * Every night at 2 AM, the task will run
 		 */
+		System.out.println(new Date());
 		Calendar today = Calendar.getInstance();
 		Timer timer = new Timer(); 
 		timer.schedule(new MyTask(BookService), today.getTime(), 1000*30); // every hours
 		/*
+		
 		timer.schedule(
 				new MyTask(smtpMailSender,microserviceUserProxy, microserviceBookProxy), 
 				today.getTime(), 

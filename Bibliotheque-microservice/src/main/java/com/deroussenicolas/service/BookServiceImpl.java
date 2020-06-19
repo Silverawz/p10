@@ -164,8 +164,11 @@ public class BookServiceImpl implements BookService {
 			sendingEmail(waitingListReservation);
 			// TO DO smtpMailSender.send(to, subject, body);
 			System.err.println("a reçu le mail = "+waitingListReservation.getId_waiting_list_reservation());
-			
-			waitingListReservation.setDate_mail_send(new Date());
+			Calendar cal = Calendar.getInstance();
+		    cal.setTime(new Date());
+		    cal.add(Calendar.HOUR_OF_DAY, 2);
+		    Date date = cal.getTime();	    
+			waitingListReservation.setDate_mail_send(date);
 			waitingListReservationRepository.save(waitingListReservation);
 			waitingListReservationReturned = waitingListReservation;
 		} else if (waitingListReservation.getDate_mail_send() != null) {

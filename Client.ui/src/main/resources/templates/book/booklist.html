@@ -99,17 +99,23 @@
 							
 							
 							<!-- on affiche la date de retour prévue, null si aucune date -->
-							<!--  <td th:if="${s.copy_list.size() == 0}" th:text=${s.date_when_book_is_back}></td>-->
-							<td th:text="${s.numberOfCopiesAvailable == 0} ? ${s.date_when_book_is_back} : 'Disponible'"></td>
+							<!--  <td th:if="${s.copy_list.size() == 0}" th:text=${s.date_when_book_is_back}></td>-->					
+							
+							<td th:text="${s.numberOfCopiesAvailable == 0 && s.date_when_book_is_back != null} ? ${s.date_when_book_is_back} : 'Aucune date'"></td>
 							<!--  <td th:text=${s.date_when_book_is_back}></td>-->
 								
 							<!-- si s.copy_list.size() == 0 on affiche la size de la file d'attente pour le book en question -->
-							<td th:text=${s.waiting_queue}></td>	
+							<td th:text="${s.waiting_queue != '0/0'} ? ${s.waiting_queue} : 'Aucune'"></td>
+							<!--  <td th:text=${s.waiting_queue}></td>	-->
 							
-							<td th:if="${!s.book_is_already_reserved_by_user}">
+							
+							
+							<td th:if="${!s.book_is_already_reserved_by_user && s.numberOfCopiesAvailable == 0}">
 							<a onclick="return confirm('Etes vous sur ?')" th:href="@{/reservation(id_book=${s.id_book})}">
 								Reserver</a>
-							</td>					
+							</td>		
+							<td th:if="${s.book_is_already_reserved_by_user}">Reservation impossible
+							</td>		
 						</tr>
 					</table>
 				</div>

@@ -113,7 +113,11 @@ public class BookController {
 			// date_when_book_is_back
 			bookBeanList.get(i).setDate_when_book_is_back(lastReservationForEachBooks.get(i)); 
 			// waiting_queue
-			bookBeanList.get(i).setWaiting_queue(""+queueSizeForEachsBooks.get(i)+"/"+numberOfCopiesNotAvailableForEachBook.get(i)+""); 
+			if(queueSizeForEachsBooks.get(i) > 0 && numberOfCopiesNotAvailableForEachBook.get(i) == 0) {
+				bookBeanList.get(i).setWaiting_queue("0/0"); 
+			} else {
+				bookBeanList.get(i).setWaiting_queue(""+queueSizeForEachsBooks.get(i)+"/"+numberOfCopiesNotAvailableForEachBook.get(i)+""); 
+			}		
 			// book_is_already_reserved_by_user
 			if(queueSizeForEachsBooks.get(i) == numberOfCopiesNotAvailableForEachBook.get(i)) { // if waiting queue is full then you cannot do a reservation
 				  bookBeanList.get(i).setBook_is_already_reserved_by_user(true); // cannot reserve because waiting queue is full
