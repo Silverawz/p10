@@ -26,8 +26,6 @@ public class WaitingListReservationController {
 
 	@Autowired
 	private WaitingListService waitingListService;
-	@Autowired
-	private WaitingListReservationRepository waitingListReservationRepository;
 	@Autowired 
 	private BookService bookService;
 	@Autowired 
@@ -63,7 +61,7 @@ public class WaitingListReservationController {
     		waitingListReservation.setIs_archived(false);
     		waitingListReservation.setIs_canceled(false);
     		waitingListReservation.setPosition_in_queue(positionInQueueCalculate(id_book));;
-    		waitingListReservationRepository.save(waitingListReservation);
+    		waitingListService.save(waitingListReservation);
     		return true;
     	}
     	return false;
@@ -72,17 +70,17 @@ public class WaitingListReservationController {
 	@GetMapping(value="/WaitingListReservationFromUser/{userEmail}")
     public List<WaitingListReservation> WaitingListReservationFromUser(@PathVariable String userEmail) {
 		int user_id = userService.findByEmail(userEmail).getId_user();
-		return waitingListReservationRepository.waitingListReservationOfUserWithParamsArchived(user_id, false);		
+		return waitingListService.waitingListReservationOfUserWithParamsArchived(user_id, false);		
 	}
  
 	
 	
 	@GetMapping(value="/WaitingListReservationCancel/{id_waitingListReservation}/{userEmail}")
     public boolean WaitingListReservationCancel(@PathVariable int id_waitingListReservation, @PathVariable String userEmail) {	
-		WaitingListReservation waitingListReservation = waitingListReservationRepository.waitingListReservationById(id_waitingListReservation);
+		WaitingListReservation waitingListReservation = waitingListService.waitingListReservationById(id_waitingListReservation);
 		if (waitingListReservation.getUser().getEmail() == userEmail || waitingListReservation.isIs_canceled() == false) {
 			waitingListReservation.setIs_canceled(true);
-			waitingListReservationRepository.save(waitingListReservation);
+			waitingListService.save(waitingListReservation);
 			positionInQueueRecalculateAllForASingleBook(waitingListReservation);
 			return true;
 		} else {
@@ -125,15 +123,15 @@ public class WaitingListReservationController {
 				}
 			}
 			listToCompare.remove(index_of_lowest_position);
-			WaitingListReservation waitingListReservation = waitingListReservationRepository.waitingListReservationById(id_current_WaitingListReservation_closest_to_zero);
+			WaitingListReservation waitingListReservation = waitingListService.waitingListReservationById(id_current_WaitingListReservation_closest_to_zero);
 			waitingListReservation.setPosition_in_queue(positionInTheQueue);
-			waitingListReservationRepository.save(waitingListReservation);		
+			waitingListService.save(waitingListReservation);		
 		} else if (listToCompare.size() == 1){			
 			String splitInformation[] = listToCompare.get(0).split("/");			
 			int id_current_waitingListReservation = Integer.parseInt(splitInformation[0]);
-			WaitingListReservation waitingListReservation = waitingListReservationRepository.waitingListReservationById(id_current_waitingListReservation);
+			WaitingListReservation waitingListReservation = waitingListService.waitingListReservationById(id_current_waitingListReservation);
 			waitingListReservation.setPosition_in_queue(positionInTheQueue);
-			waitingListReservationRepository.save(waitingListReservation);	
+			waitingListService.save(waitingListReservation);	
 			listToCompare.remove(0);
 		}
 		return listToCompare;	
@@ -165,8 +163,8 @@ public class WaitingListReservationController {
 	
 	private int numberOfRervationWaitingListForABookNotArchivedNorCanceled(int id_book) {
 		int result = 0;
-		waitingListReservationRepository.findAll();
-		for (WaitingListReservation waitingListReservation : waitingListReservationRepository.findAll()) {
+		waitingListService.findAll();
+		for (WaitingListReservation waitingListReservation : waitingListService.findAll()) {
 			if(waitingListReservation.isIs_archived() == false && waitingListReservation.isIs_canceled() == false && 
 			waitingListReservation.getBook().getId_book() == id_book) {
 				result++;

@@ -45,6 +45,16 @@ public class WaitingListReservation implements Serializable {
 		
 	}
 
+	public WaitingListReservation(@NotNull User user, @NotNull Book book, @NotNull int position_in_queue,
+			@NotNull boolean is_archived, @NotNull boolean is_canceled) {
+		super();
+		this.user = user;
+		this.book = book;
+		this.position_in_queue = position_in_queue;
+		this.is_archived = is_archived;
+		this.is_canceled = is_canceled;
+	}
+
 	public int getId_waiting_list_reservation() {
 		return id_waiting_list_reservation;
 	}

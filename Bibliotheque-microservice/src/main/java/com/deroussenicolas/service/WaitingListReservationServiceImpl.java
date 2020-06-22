@@ -56,6 +56,16 @@ public class WaitingListReservationServiceImpl implements WaitingListService {
 	public WaitingListReservation waitingListReservationById(int id_waiting_list_reservation) {
 		return waitingListRepository.waitingListReservationById(id_waiting_list_reservation);
 	}
+
+	@Override
+	public void save(WaitingListReservation waitingListReservation) {
+		waitingListRepository.save(waitingListReservation);	
+	}
+
+	@Override
+	public List<WaitingListReservation> waitingListReservationOfUserWithParamsArchived(int user_id, boolean b) {
+		return waitingListRepository.waitingListReservationOfUserWithParamsArchived(user_id, b);
+	}
 	
 	
 }

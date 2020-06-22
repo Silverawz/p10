@@ -38,6 +38,16 @@ public class Reservation implements Serializable {
 		super();
 	}
 
+	public Reservation(@NotNull @Size(min = 10, max = 10) String date_begin,
+			@NotNull @Size(min = 10, max = 10) String date_end, @NotNull boolean is_archived, Copy copy, User user) {
+		super();
+		this.date_begin = date_begin;
+		this.date_end = date_end;
+		this.is_archived = is_archived;
+		this.copy = copy;
+		this.user = user;
+	}
+
 	public int getId_reservation() {
 		return id_reservation;
 	}

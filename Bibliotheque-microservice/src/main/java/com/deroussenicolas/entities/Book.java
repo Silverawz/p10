@@ -42,6 +42,15 @@ public class Book implements Serializable {
 		super();
 	}
 
+	public Book( @NotNull @Size(min = 3, max = 35) String book_name,
+			@NotNull @Size(min = 3, max = 35) String book_author,
+			@NotNull @Size(min = 3, max = 35) String book_editor) {
+		super();
+		this.book_name = book_name;
+		this.book_author = book_author;
+		this.book_editor = book_editor;
+	}
+
 	public int getId_book() {
 		return id_book;
 	}

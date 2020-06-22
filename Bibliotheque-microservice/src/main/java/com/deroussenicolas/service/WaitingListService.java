@@ -14,5 +14,9 @@ public interface WaitingListService {
 	
 	WaitingListReservation waitingListReservationOfUserBookWithParamsForASingleObject(int user_id, int book_id, boolean is_archived, boolean is_canceled);
 	
-	WaitingListReservation waitingListReservationById(int id_waiting_list_reservation);	
+	WaitingListReservation waitingListReservationById(int id_waiting_list_reservation);
+
+	void save(WaitingListReservation waitingListReservation);
+
+	List<WaitingListReservation> waitingListReservationOfUserWithParamsArchived(int user_id, boolean b);	
 }

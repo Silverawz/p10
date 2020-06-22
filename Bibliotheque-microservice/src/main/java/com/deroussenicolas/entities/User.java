@@ -45,6 +45,16 @@ public class User implements Serializable {
 		super();
 	}
 
+	public User(@NotNull @Size(min = 3, max = 30) String firstname, @NotNull @Size(min = 3, max = 30) String lastname,
+			@NotNull String email, @NotNull @Size(min = 5, max = 255) String password, @NotNull boolean active) {
+		super();
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.password = password;
+		this.active = active;
+	}
+
 	public int getId_user() {
 		return id_user;
 	}

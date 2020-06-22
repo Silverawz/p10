@@ -35,6 +35,12 @@ public class Copy implements Serializable {
 		super();
 	}
 
+	public Copy(@NotNull char status, Book book) {
+		super();
+		this.status = status;
+		this.book = book;
+	}
+
 	public int getId_copy() {
 		return id_copy;
 	}

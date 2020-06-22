@@ -1,6 +1,7 @@
 package com.deroussenicolas.service;
 
 import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -57,8 +58,8 @@ public class BookServiceImpl implements BookService {
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
 		int month = c.get(Calendar.MONTH);
-
-		List<Reservation> allReservationList = reservationRepository.reservationListNotArchived(false);
+		List<Reservation> allReservationList = reservationRepository.reservationListNotArchived(false);		
+		
 
 		for (Reservation reservation : allReservationList) {
 			String dateEnd = reservation.getDate_end();
