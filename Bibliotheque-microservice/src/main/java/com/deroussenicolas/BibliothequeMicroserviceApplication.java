@@ -137,7 +137,7 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		
 		Copy copy6 = new Copy();
 		copy6.setBook(book3);
-		copy6.setStatus('0');
+		copy6.setStatus('1');
 		copyRepository.save(copy6);
 		
 		Book book4 = new Book();
@@ -262,26 +262,25 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		calendar.set(2020, 5, 13, 14, 58);
 		Date date = calendar.getTime();
 			*/
-		/*
+		
 		waitingListReservation = new WaitingListReservation();
-		waitingListReservation.setBook(bookRepository.findAll().get(0));
+		waitingListReservation.setBook(bookRepository.findAll().get(3));
 		waitingListReservation.setUser(userRepository.findAll().get(0));
 		waitingListReservation.setIs_archived(false);
 		waitingListReservation.setIs_canceled(false);
 		waitingListReservation.setPosition_in_queue(1);
-		waitingListReservation.setDate_mail_send(date);
 		waitingListReservationRepository.save(waitingListReservation);	
 		
 		WaitingListReservation waitingListReservation1 = new WaitingListReservation();
-		waitingListReservation1.setBook(bookRepository.findAll().get(0));
+		waitingListReservation1.setBook(bookRepository.findAll().get(3));
 		waitingListReservation1.setUser(userRepository.findAll().get(1));
 		waitingListReservation1.setIs_archived(false);
 		waitingListReservation1.setIs_canceled(false);
-		waitingListReservation1.setPosition_in_queue(1);
+		waitingListReservation1.setPosition_in_queue(2);
 		waitingListReservationRepository.save(waitingListReservation1);			
 		
 		WaitingListReservation waitingListReservation2 = new WaitingListReservation();
-		waitingListReservation2.setBook(bookRepository.findAll().get(0));
+		waitingListReservation2.setBook(bookRepository.findAll().get(3));
 		waitingListReservation2.setUser(userRepository.findAll().get(2));
 		waitingListReservation2.setIs_archived(false);
 		waitingListReservation2.setIs_canceled(false);
@@ -289,13 +288,13 @@ public class BibliothequeMicroserviceApplication extends SpringBootServletInitia
 		waitingListReservationRepository.save(waitingListReservation2);
 		
 		WaitingListReservation waitingListReservation3 = new WaitingListReservation();
-		waitingListReservation3.setBook(bookRepository.findAll().get(0));
+		waitingListReservation3.setBook(bookRepository.findAll().get(3));
 		waitingListReservation3.setUser(userRepository.findAll().get(3));
 		waitingListReservation3.setIs_archived(false);
 		waitingListReservation3.setIs_canceled(false);
-		waitingListReservation3.setPosition_in_queue(2);
+		waitingListReservation3.setPosition_in_queue(4);
 		waitingListReservationRepository.save(waitingListReservation3);	
-		*/
+		
 		/*
 		for (int i = 0; i < 8 ; i ++) {
 			WaitingListReservation waitingListReservationloop = new WaitingListReservation();

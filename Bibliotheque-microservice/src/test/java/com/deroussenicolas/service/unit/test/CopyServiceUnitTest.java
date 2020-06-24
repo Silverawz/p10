@@ -11,8 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.deroussenicolas.dao.BookRepository;
-import com.deroussenicolas.dao.CopyRepository;
 import com.deroussenicolas.entities.Copy;
 import com.deroussenicolas.service.CopyServiceImpl;
 

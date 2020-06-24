@@ -1,8 +1,5 @@
 package com.deroussenicolas.service;
 
-import java.text.ParseException;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.mail.MessagingException;
 
@@ -259,9 +255,9 @@ public class BookServiceImpl implements BookService {
 		boolean result = false;		
 		Calendar calendarOfArgumentDate = Calendar.getInstance(); 
 		calendarOfArgumentDate.setTime(date);
-		calendarOfArgumentDate.add(Calendar.HOUR_OF_DAY, 48); // adds 48 hour	
+		calendarOfArgumentDate.add(Calendar.HOUR_OF_DAY, 46);	
 		Calendar calendarActualDateToday = Calendar.getInstance();
-		calendarActualDateToday.setTime(new Date());			
+		calendarActualDateToday.setTime(new Date());	
 		if (calendarOfArgumentDate.compareTo(calendarActualDateToday) > 0) {
 			result = true;
 		} 

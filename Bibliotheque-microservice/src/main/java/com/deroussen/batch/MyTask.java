@@ -2,7 +2,6 @@ package com.deroussen.batch;
 
 import java.util.TimerTask;
 
-import com.deroussenicolas.SmtpMailSender;
 import com.deroussenicolas.service.BookService;
 
 
