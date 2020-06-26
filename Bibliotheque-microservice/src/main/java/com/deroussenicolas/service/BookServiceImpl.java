@@ -147,7 +147,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	
-	private WaitingListReservation algoBatch(List<WaitingListReservation> waitingListForTheBook, int book_id) {
+	public WaitingListReservation algoBatch(List<WaitingListReservation> waitingListForTheBook, int book_id) {
 		WaitingListReservation waitingListReservationReturned = new WaitingListReservation();
 		int index_waitingListReservation_first_in_queue = checkTheFirstInTheQueueForWaitingListForTheBook(waitingListForTheBook);
 		try {
@@ -204,7 +204,7 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	
-	private List<WaitingListReservation> recalculatePositionInTheQueueForTheWaitingListReservation(List<WaitingListReservation> waitingListReservation, int positionInTheQueue) {
+	public List<WaitingListReservation> recalculatePositionInTheQueueForTheWaitingListReservation(List<WaitingListReservation> waitingListReservation, int positionInTheQueue) {
 		List<WaitingListReservation> listToCompare = waitingListReservation;
 		int id_current_WaitingListReservation_closest_to_zero = 0;
 		int position_in_queue_closest_to_zero = 0;		
@@ -237,7 +237,7 @@ public class BookServiceImpl implements BookService {
 	
 	
 	
-	private int checkTheFirstInTheQueueForWaitingListForTheBook(List<WaitingListReservation> waitingListForTheBook) {
+	public int checkTheFirstInTheQueueForWaitingListForTheBook(List<WaitingListReservation> waitingListForTheBook) {
 		int result = 0;
 		A : for (int i = 0; i < waitingListForTheBook.size(); i++) {
 			if (waitingListForTheBook.get(i).getPosition_in_queue() == 1) {

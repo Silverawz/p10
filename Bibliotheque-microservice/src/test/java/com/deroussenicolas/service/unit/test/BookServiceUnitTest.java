@@ -11,26 +11,41 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.deroussenicolas.dao.BookRepository;
+import com.deroussenicolas.dao.CopyRepository;
+import com.deroussenicolas.dao.ReservationRepository;
+import com.deroussenicolas.dao.WaitingListReservationRepository;
 import com.deroussenicolas.entities.Book;
+import com.deroussenicolas.entities.Reservation;
+import com.deroussenicolas.entities.WaitingListReservation;
 import com.deroussenicolas.service.BookServiceImpl;
+import com.deroussenicolas.service.CopyService;
 
 @SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class BookServiceUnitTest {
 	
-	
-	private static BookServiceImpl bookServiceImpl = mock(BookServiceImpl.class);
-	private static BookServiceImpl bookServiceImplNotMock;
+	@InjectMocks
+	private static BookServiceImpl bookServiceImpl;
+	private static CopyRepository copyRepository = mock(CopyRepository.class);
+	private static BookRepository bookRepository = mock(BookRepository.class);
+	private static ReservationRepository reservationRepository = mock(ReservationRepository.class);
+	private static WaitingListReservationRepository waitingListRepository = mock(WaitingListReservationRepository.class);
+	private static CopyService copyService = mock(CopyService.class);
 	private static List<Book> allBookList;
 	private static Book book = new Book();
 	
     @BeforeClass
     public static void initBeforeClass() {
-    	bookServiceImplNotMock = new BookServiceImpl();
+    	bookServiceImpl = new BookServiceImpl();
     	creatingTheBookList();
-    	given(bookServiceImpl.findAll()).willReturn(allBookList);
-    	given(bookServiceImpl.findById(1)).willReturn(book);
+    	given(bookRepository.findAll()).willReturn(allBookList);
+    	given(bookRepository.findById(1)).willReturn(book);
     }
     
     private static void creatingTheBookList() {
@@ -57,13 +72,41 @@ public class BookServiceUnitTest {
     	Calendar calendar = Calendar.getInstance(); 
     	calendar.set(2500, 1, 1);
     	date1 = calendar.getTime();
-    	assertEquals(bookServiceImplNotMock.compareDateOfWaitingListReservation(date1), true);
+    	assertEquals(bookServiceImpl.compareDateOfWaitingListReservation(date1), true);
     	
     	Date date2 = new Date();
     	Calendar calendar1 = Calendar.getInstance(); 
     	calendar1.set(1500, 1, 1);
     	date2 = calendar1.getTime();
-    	assertEquals(bookServiceImplNotMock.compareDateOfWaitingListReservation(date2), false);   	
+    	assertEquals(bookServiceImpl.compareDateOfWaitingListReservation(date2), false);   	
     }
+    
+    @Test
+    public void getAllBooksForEmail() {
+    	bookServiceImpl.getAllBooksForEmail();
+    }
+    
+    @Test
+    public void queueSizeForEachBooks() {
+    	bookServiceImpl.queueSizeForEachBooks();
+    }
+    
+    @Test
+    public void batchBook() {
+    	bookServiceImpl.batchBook();
+    }
+    
+    @Test
+    public void checkTheFirstInTheQueueForWaitingListForTheBook() {
+    	List<WaitingListReservation> waitingListForTheBook = new ArrayList<>();   	
+    	WaitingListReservation waitingListReservation1 = new WaitingListReservation();
+    	waitingListReservation1.setPosition_in_queue(1);
+    	waitingListForTheBook.add(waitingListReservation1);
+    	WaitingListReservation waitingListReservation2 = new WaitingListReservation();
+    	waitingListReservation2.setPosition_in_queue(2);
+    	waitingListForTheBook.add(waitingListReservation2);
+    	assertEquals(bookServiceImpl.checkTheFirstInTheQueueForWaitingListForTheBook(waitingListForTheBook), 0);
+    }
+
      
 }
