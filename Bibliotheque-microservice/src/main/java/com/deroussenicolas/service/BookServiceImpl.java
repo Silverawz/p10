@@ -50,10 +50,6 @@ public class BookServiceImpl implements BookService {
 		int dayNowAsInt = Integer.parseInt(dayNow);
 		int monthNowAsInt = Integer.parseInt(monthNow);
 		int yearNowAsInt = Integer.parseInt(yearNow);
-
-		Calendar c = Calendar.getInstance();
-		int year = c.get(Calendar.YEAR);
-		int month = c.get(Calendar.MONTH);
 		List<Reservation> allReservationList = reservationRepository.reservationListNotArchived(false);		
 		
 

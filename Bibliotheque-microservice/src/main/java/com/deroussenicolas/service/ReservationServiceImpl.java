@@ -4,10 +4,7 @@ package com.deroussenicolas.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,12 +39,7 @@ public class ReservationServiceImpl implements ReservationService {
 		String year_DateEnd_reservation = date_end_reservation.split("\\.")[2];	
 		int day_DateEnd_FromUser_asInt = Integer.parseInt(day_DateEnd_reservation);
 		int month_DateEnd_FromUser_asInt = Integer.parseInt(month_DateEnd_reservation);
-		int year_DateEnd_FromUser_asInt = Integer.parseInt(year_DateEnd_reservation);
-		
-		LocalDate todayDate = LocalDate.now(ZoneId.of("Europe/Paris"));	
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-		String todayDateFormated = todayDate.format(formatter);
-		
+		int year_DateEnd_FromUser_asInt = Integer.parseInt(year_DateEnd_reservation);	
 		calendar = Calendar.getInstance();
 		int yearNow = calendar.get(Calendar.YEAR);
 		int monthNow = calendar.get(Calendar.MONTH);

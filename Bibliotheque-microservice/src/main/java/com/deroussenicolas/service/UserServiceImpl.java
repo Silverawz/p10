@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deroussenicolas.dao.BookRepository;
-import com.deroussenicolas.dao.CopyRepository;
 import com.deroussenicolas.dao.ReservationRepository;
 import com.deroussenicolas.dao.UserRepository;
 import com.deroussenicolas.entities.Book;
@@ -28,8 +26,6 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;	
 	@Autowired
 	private BookRepository bookRepository;
-	@Autowired
-	private CopyRepository copyRepository;	
 	@Autowired
 	private WaitingListService waitingListService;	
 	
@@ -47,13 +43,7 @@ public class UserServiceImpl implements UserService {
 		int dayNowAsInt = Integer.parseInt(dayNow);
 		int monthNowAsInt = Integer.parseInt(monthNow);
 		int yearNowAsInt = Integer.parseInt(yearNow);
-
-		Calendar c = Calendar.getInstance();
-		int year = c.get(Calendar.YEAR);
-		int month = c.get(Calendar.MONTH);
-
 		List<Reservation> allReservationList = reservationRepository.reservationListNotArchived(false);
-
 		for (Reservation reservation : allReservationList) {
 			String dateEnd = reservation.getDate_end();
 			int dayOfDateEnd = Integer.parseInt(dateEnd.split("\\.")[0]);
@@ -130,8 +120,6 @@ public class UserServiceImpl implements UserService {
 					break A;
 				}
 			}
-			//resultListOfUserOwnedOrNotEachBooks.set(index, true);	
-			//resultListOfUserOwnedOrNotEachBooks.set(copyRepository.findById(listCopyOfBooksFromReservation.get(i)).getBook().getId_book() - 1, true);
 		}	
 		// fait appel au service waitingList qui doit verifier pour chaque si l'user y est et mettre en true, tous les livres dont l'user a fait la demande	
 		resultListOfUserOwnedOrNotEachBooks = waitingListService.checkIfUserHasMadeAReservationForEchBooks(resultListOfUserOwnedOrNotEachBooks, user_id);		

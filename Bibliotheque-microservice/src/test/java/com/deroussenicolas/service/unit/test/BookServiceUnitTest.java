@@ -21,7 +21,6 @@ import com.deroussenicolas.dao.CopyRepository;
 import com.deroussenicolas.dao.ReservationRepository;
 import com.deroussenicolas.dao.WaitingListReservationRepository;
 import com.deroussenicolas.entities.Book;
-import com.deroussenicolas.entities.Reservation;
 import com.deroussenicolas.entities.WaitingListReservation;
 import com.deroussenicolas.service.BookServiceImpl;
 import com.deroussenicolas.service.CopyService;

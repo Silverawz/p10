@@ -1,8 +1,6 @@
 package com.deroussenicolas.controller;
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,9 +17,7 @@ import com.deroussenicolas.beans.BookBean;
 import com.deroussenicolas.beans.CopyBean;
 import com.deroussenicolas.proxies.MicroserviceBookProxy;
 import com.deroussenicolas.proxies.MicroserviceCopyProxy;
-import com.deroussenicolas.proxies.MicroserviceReservationProxy;
 import com.deroussenicolas.proxies.MicroserviceUserProxy;
-import com.deroussenicolas.proxies.MicroserviceWaitingListReservationProxy;
 
 @Controller
 @SessionAttributes("userEmail")
@@ -36,11 +32,6 @@ public class BookController {
 	@Autowired
 	private MicroserviceCopyProxy microServiceCopyProxy;
 	
-	@Autowired
-	private MicroserviceReservationProxy microServiceReservationProxy;
-	
-	@Autowired
-	private MicroserviceWaitingListReservationProxy microserviceWaitingListReservationProxy;
 	
 	  @GetMapping("/bookList") 
 	  public ModelAndView bookList(ModelAndView modelAndView,

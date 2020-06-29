@@ -1,6 +1,5 @@
 package com.deroussenicolas.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +74,6 @@ public class WaitingListReservationController {
 			modelAndView.addObject("book", microserviceBookProxy.oneBookWithId(id_book));
 			modelAndView.setViewName("private/waitingListReservationCanceled");	
 		} else {
-			//to do
 			modelAndView.setViewName("errors/access_denied");
 		}
 		return modelAndView;	

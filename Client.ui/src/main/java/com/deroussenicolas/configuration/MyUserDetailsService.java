@@ -39,8 +39,6 @@ public class MyUserDetailsService implements UserDetailsService, Serializable {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	//	HttpServletRequest request = ((ServletRequestAttributes ) RequestContextHolder.getRequestAttributes()).getRequest();
-	//	String email = request.getParameter("email");
 		UserBean userBean = microserviceUserProxy.loadUserByUsername(username);
 		MyUserDetails myUserDetails = new MyUserDetails(userBean);
 		if(myUserDetails != null) {

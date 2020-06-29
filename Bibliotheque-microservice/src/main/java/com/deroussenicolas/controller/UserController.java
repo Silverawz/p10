@@ -41,13 +41,11 @@ public class UserController {
     	return null;
     }
     
-    //
     @PostMapping(value = "/User/validation")
     public User test(@RequestBody String email) {
     	User user = userservice.findByEmail(email);
     	return user;
     }  
-    //
     
     @GetMapping(value = "/loadUserByUsername/{email}")
     public User loadUserByUsername(@PathVariable String email) {
