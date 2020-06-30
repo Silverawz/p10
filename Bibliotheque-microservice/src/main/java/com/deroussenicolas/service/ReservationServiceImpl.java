@@ -217,35 +217,26 @@ public class ReservationServiceImpl implements ReservationService {
 		return result;
 	}
 
-
-
+	
 	@Override
 	public List<Reservation> reservationListOfUser(int id_user) {
 		return reservationRepository.reservationListOfUser(id_user);
 	}
-
-
-
+	
 	@Override
 	public Reservation findById(int id) {
 		return reservationRepository.findById(id);
 	}
-
-
 
 	@Override
 	public List<Reservation> findAll() {
 		return reservationRepository.findAll();
 	}
 
-
-
 	@Override
 	public List<Reservation> reservationListNotArchived(boolean b) {
 		return reservationRepository.reservationListNotArchived(b);
 	}
-
-
 
 	@Override
 	public List<Date> lastRevervationForEachBooks() {
