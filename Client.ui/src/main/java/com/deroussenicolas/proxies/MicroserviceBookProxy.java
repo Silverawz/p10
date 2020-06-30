@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.deroussenicolas.beans.BookBean;
 
 //For local testing on IDE you need that url below
-//@FeignClient(name="bibliotheque-microservice", url = "localhost:8081")
+@FeignClient(name="bibliotheque-microservice", url = "localhost:8081")
 
 //For deploying on tomcat you need that url below
-@FeignClient(name="bibliotheque-microservice", url = "http://localhost:8081/Bibliotheque-microservice-0.0.1-SNAPSHOT")
+//@FeignClient(name="bibliotheque-microservice", url = "http://localhost:8081/Bibliotheque-microservice-0.0.1-SNAPSHOT")
 public interface MicroserviceBookProxy {
 	
 	

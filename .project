@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>p10</name>
@@ -9,3 +10,17 @@
 	<natures>
 	</natures>
 </projectDescription>
+||||||| 42f5af5
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>p10 issue2</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>
+>>>>>>> origin/hotfixes

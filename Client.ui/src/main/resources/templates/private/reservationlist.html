@@ -32,7 +32,7 @@
 							<a th:href="@{/extendReservation(id=${s.id_reservation})}">Prolonger le prêt en cours de 4 semaines</a>
 							</td>
 							<td th:if="${statusList[__${iterStat.index}__] != true}">
-									Cette ouvrage a déja été prolongé.
+									Prolongation non disponible (Cette ouvrage a déja été prolongé ou sa date de fin est expirée)
 							</td>	
 						</tr>
 					</table>

@@ -219,8 +219,9 @@ public class ReservationServiceImpl implements ReservationService {
 
 	
 	@Override
-	public List<Reservation> reservationListOfUser(int id_user) {
-		return reservationRepository.reservationListOfUser(id_user);
+	public List<Reservation> reservationListOfUser(int id_user) {		
+		List<Reservation> reservationListOfUser = reservationRepository.reservationListOfUser(id_user);
+		return reservationListOfUser;
 	}
 	
 	@Override
@@ -263,6 +264,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 	
 	
+
 	public Date compareDateOfReservations(List<Reservation> listToCompareDate) {
 		List<Date> dates = new ArrayList<>();
 		for (Reservation reservation : listToCompareDate) {
@@ -290,5 +292,21 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	
+
+
+	
+	public boolean verificationIfEndingDateIsNotOutdated(String date) {
+		boolean result = false;		
+		try {
+			Date dateParsedFromString = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date);
+			int resultDateCompare = dateParsedFromString.compareTo(new Date());
+			if(resultDateCompare >= 0) {
+				result = true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}			
+		return result;
+	}
 
 }

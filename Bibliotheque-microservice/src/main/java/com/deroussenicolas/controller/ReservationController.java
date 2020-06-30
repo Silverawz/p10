@@ -1,7 +1,10 @@
 package com.deroussenicolas.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,18 +63,29 @@ public class ReservationController {
     public Reservation extendReservationWithId(@PathVariable int id) {
     	Reservation reservation = reservationService.findById(id);
     	Copy copyOfTheReservation = copyService.findById(reservation.getCopy().getId_copy());
-    	char status = copyOfTheReservation.getStatus();   
-    	if(status == '1') {
-    		reservation = reservationService.saveExtendReservation(id);
-    		copyOfTheReservation.setStatus('2');
-    		copyService.save(copyOfTheReservation);
-    	}
-    	else {
-    		reservation = reservationService.findById(id);
-    	}
+    	char status = copyOfTheReservation.getStatus();  
+		if(verificationIfEndingDateIsNotOutdated(reservation.getDate_end()) == true && status == '1') {
+	    	reservation = reservationService.saveExtendReservation(id);
+	    	copyOfTheReservation.setStatus('2');
+	    	copyService.save(copyOfTheReservation);    			
+		}
     	return reservation;
     }
     
+	public boolean verificationIfEndingDateIsNotOutdated(String date) {
+		boolean result = false;		
+		try {
+			Date dateParsedFromString = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date);
+			int resultDateCompare = dateParsedFromString.compareTo(new Date());
+			if(resultDateCompare >= 0) {
+				result = true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}			
+		return result;
+	}
+	
     @GetMapping(value = "/ReservationUser/{id}")
     public List<Reservation> reservationWithUserId(@PathVariable int id) {
     	List<Reservation> reservationOfUser = reservationService.reservationListOfUser(id);
