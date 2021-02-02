@@ -15,7 +15,7 @@ Mise en place d'un batch de mail de relance pour les retards de restitution de l
 hotfixes :
 Correction d'une feature présent lors de la 1.0 (https://github.com/Silverawz/p10/tree/hotfixes)
 
-release 1.1
+release 1.1 :
 Ajout d'un fonctionnalite de réservation des ouvrages (https://github.com/Silverawz/p10/tree/feature)
 
 ## Installation et déploiement
