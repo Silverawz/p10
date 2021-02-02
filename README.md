@@ -5,7 +5,7 @@
 ## Contexte
 Ce projet a été développé en 2020 dans le cadre du cursus "Développeur d'application Java" d'OpenClassrooms.
 
-Il regroupe les 2 modules du projet 7 : Développez le nouveau système d’information de la bibliothèque d’une grande ville (Front / API / Batch).
+Il regroupe les 2 modules du projet 7 : Développez le nouveau système d’information de la bibliothèque d’une grande ville (Front / API et Batch).
 Les modules sont indépendants, packagés par Maven et disposent d'une documentation via leur fichier README.md respectif.
  
 release 1.0 :
